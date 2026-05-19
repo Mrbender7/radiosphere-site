@@ -378,16 +378,8 @@ if (typeof window !== "undefined") {
       reportCrash("error", message, { stack, location });
       return;
     }
-    if (message) {
-      umamiTrack("js-error", {
-        name: err instanceof Error ? err.name : "Error",
-        message: trunc(message, 300),
-        location,
-        stack,
-        route: window.location.pathname,
-        ...envInfo(),
-      });
-    }
+    // js-error emission disabled (Umami budget cleanup — js-crash + hydration-error-* cover the actionable cases)
+    void message; void err; void location; void stack;
   });
 
   // React 18 reports hydration mismatches via console.error. Wrap it once to

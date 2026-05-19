@@ -173,3 +173,16 @@ html[dir="rtl"] .rtl-flip {
 }
 .animate-shiba-puff-right { animation: shiba-puff-right 8s linear infinite; }
 .animate-shiba-puff-left  { animation: shiba-puff-left  8s linear infinite; }
+
+/* Manga-style opaque smoke puff (cluster of solid white bubbles) */
+.shiba-puff {
+  width: 56px;
+  height: 56px;
+  background:
+    radial-gradient(circle at 30% 35%, #ffffff 0 14px, transparent 15px),
+    radial-gradient(circle at 70% 30%, #ffffff 0 12px, transparent 13px),
+    radial-gradient(circle at 25% 70%, #ffffff 0 13px, transparent 14px),
+    radial-gradient(circle at 65% 72%, #ffffff 0 15px, transparent 16px),
+    radial-gradient(circle at 50% 50%, #ffffff 0 18px, transparent 19px);
+  filter: drop-shadow(0 0 1px rgba(0,0,0,0.35));
+}

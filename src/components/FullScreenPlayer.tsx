@@ -255,8 +255,8 @@ export function FullScreenPlayer({ onTagClick }: { onTagClick?: (tag: string) =>
                         className="absolute top-1/2 -translate-y-1/2 w-12 h-12 animate-shiba-run"
                         style={{ imageRendering: "pixelated" }}
                       />
-                      <span aria-hidden="true" className="absolute top-1/2 -translate-y-1/2 right-0 w-12 h-12 rounded-full bg-white/80 blur-md animate-shiba-puff-right z-10" />
-                      <span aria-hidden="true" className="absolute top-1/2 -translate-y-1/2 left-0 w-12 h-12 rounded-full bg-white/80 blur-md animate-shiba-puff-left z-10" />
+                      <span aria-hidden="true" className="shiba-puff shiba-puff-right absolute top-1/2 -translate-y-1/2 right-0 animate-shiba-puff-right z-10" />
+                      <span aria-hidden="true" className="shiba-puff shiba-puff-left absolute top-1/2 -translate-y-1/2 left-0 animate-shiba-puff-left z-10" />
                     </div>
                   )}
                 </div>

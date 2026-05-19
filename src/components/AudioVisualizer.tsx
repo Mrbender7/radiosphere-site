@@ -71,7 +71,25 @@ export function AudioVisualizer({ size = "small", active = true, className }: Au
 
   return (
     <div className={cn("flex items-end justify-center", className)} style={{ height, width: totalWidth, gap }}>
-      {Array.from({ length: visibleBars }).map((_, i) => (
+      {Array.from({ length: visibleBars }).map((_, i) => {
+        const anim = instanceAnimations[i] ?? baseAnimations[i];
+        return (
+        <span
+          key={i}
+          className="rounded-full transition-transform duration-200"
+          style={{
+            width: barWidth,
+            height: "100%",
+            background: "linear-gradient(to top, hsl(var(--primary)), hsl(var(--primary-glow)))",
+            animation: active ? `equalizer-bar ${anim.duration} ease-in-out ${anim.delay} infinite alternate` : "none",
+            opacity: active ? 1 : 0.55,
+            transform: active ? undefined : "scaleY(0.12)",
+            transformOrigin: "bottom",
+            ["--bar-min-scale" as string]: anim.minScale,
+          }}
+        />
+        );
+      })}
         <span
           key={i}
           className="rounded-full transition-transform duration-200"

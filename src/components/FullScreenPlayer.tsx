@@ -246,7 +246,17 @@ export function FullScreenPlayer({ onTagClick }: { onTagClick?: (tag: string) =>
                       }
                     </p>
                   </div>
-                  <AudioVisualizer size="medium" active={isPlaying} />
+                  {isPlaying && (
+                    <div className="w-full overflow-hidden h-12 relative">
+                      <img
+                        src="/shiba-cursor.gif"
+                        alt=""
+                        aria-hidden="true"
+                        className="absolute top-1/2 -translate-y-1/2 w-12 h-12 animate-shiba-run"
+                        style={{ imageRendering: "pixelated" }}
+                      />
+                    </div>
+                  )}
                 </div>
                 <p className="text-sm text-muted-foreground mt-1">
                   {currentStation.tags.length > 0 ? currentStation.tags.slice(0, 2).join(' • ') : currentStation.country}

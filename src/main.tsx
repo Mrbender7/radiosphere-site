@@ -11,14 +11,8 @@ import { createRoot as reactDomCreateRoot } from "react-dom/client";
 import { RouterProvider } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { setForceCsr, shouldForceCsr, FORCE_CSR_KEY } from "./utils/forceCsr";
-import {
-  trackHydrationMismatch,
-  trackCsrFallbackDuration,
-  trackWebViewDetected,
-  cleanUrlPollutingParams,
-  trackUrlCleaned,
-  setupPageviewPerf,
-} from "./lib/analytics-events";
+import { cleanUrlPollutingParams } from "./lib/analytics-events";
+import { trackHydrationMismatch } from "./lib/analytics-events";
 import "./index.css";
 
 // ─── Boot-time diagnostics (safe no-ops in SSR) ──────────────────────────────

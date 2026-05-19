@@ -508,8 +508,13 @@
 
     pBtn.addEventListener("click", function () {
       if (!current) return;
-      if (audioPlayer.paused) safePlay();
-      else audioPlayer.pause();
+      if (audioPlayer.paused) {
+        track("lite-play-btn", { station: current.n });
+        safePlay();
+      } else {
+        track("lite-pause-btn", { station: current.n });
+        audioPlayer.pause();
+      }
     });
 
     audioPlayer.addEventListener("play", function () {

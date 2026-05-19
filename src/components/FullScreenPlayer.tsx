@@ -248,6 +248,8 @@ export function FullScreenPlayer({ onTagClick }: { onTagClick?: (tag: string) =>
                   </div>
                   {isPlaying && (
                     <div className="w-full overflow-hidden h-12 relative">
+                      <span aria-hidden="true" className="absolute top-1/2 -translate-y-1/2 right-0 w-10 h-10 rounded-full bg-white/70 blur-md animate-shiba-puff-right" />
+                      <span aria-hidden="true" className="absolute top-1/2 -translate-y-1/2 left-0 w-10 h-10 rounded-full bg-white/70 blur-md animate-shiba-puff-left" />
                       <img
                         src="/shiba-cursor.gif"
                         alt=""

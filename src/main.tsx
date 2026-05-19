@@ -427,21 +427,7 @@ if (typeof window !== "undefined") {
     }
   }, true);
 
-  // Visibility into total session loss (long task on first paint, etc.)
-  // We only emit once per session, on first hidden after load.
-  let firstHiddenReported = false;
-  document.addEventListener("visibilitychange", () => {
-    if (document.visibilityState !== "hidden" || firstHiddenReported) return;
-    firstHiddenReported = true;
-    const t = performance.now();
-    if (t < 10_000) {
-      umamiTrack("early-bounce", {
-        ms: Math.round(t),
-        route: window.location.pathname,
-        ...envInfo(),
-      });
-    }
-  });
+  // early-bounce disabled (Umami budget cleanup — high-volume, low-signal)
 
   // PWA install lifecycle — capture the native browser prompt outcome.
   window.addEventListener("beforeinstallprompt", (e) => {

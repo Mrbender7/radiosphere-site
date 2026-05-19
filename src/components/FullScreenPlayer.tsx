@@ -248,8 +248,6 @@ export function FullScreenPlayer({ onTagClick }: { onTagClick?: (tag: string) =>
                   </div>
                   {isPlaying && (
                     <div className="w-full overflow-hidden h-12 relative">
-                      <span aria-hidden="true" className="absolute top-1/2 -translate-y-1/2 right-0 w-10 h-10 rounded-full bg-white/70 blur-md animate-shiba-puff-right" />
-                      <span aria-hidden="true" className="absolute top-1/2 -translate-y-1/2 left-0 w-10 h-10 rounded-full bg-white/70 blur-md animate-shiba-puff-left" />
                       <img
                         src="/shiba-cursor.gif"
                         alt=""
@@ -257,6 +255,8 @@ export function FullScreenPlayer({ onTagClick }: { onTagClick?: (tag: string) =>
                         className="absolute top-1/2 -translate-y-1/2 w-12 h-12 animate-shiba-run"
                         style={{ imageRendering: "pixelated" }}
                       />
+                      <span aria-hidden="true" className="absolute top-1/2 -translate-y-1/2 right-0 w-12 h-12 rounded-full bg-white/80 blur-md animate-shiba-puff-right z-10" />
+                      <span aria-hidden="true" className="absolute top-1/2 -translate-y-1/2 left-0 w-12 h-12 rounded-full bg-white/80 blur-md animate-shiba-puff-left z-10" />
                     </div>
                   )}
                 </div>

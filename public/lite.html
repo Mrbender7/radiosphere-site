@@ -566,7 +566,9 @@
     }
 
     document.getElementById("cta-full").addEventListener("click", function () { track("lite-cta-full"); });
-    document.getElementById("cta-android").addEventListener("click", function () { track("lite-cta-android"); });
+    document.getElementById("cta-android").addEventListener("click", function () { track("lite-cta-android", { source: "header" }); });
+    var ctaAndroidInline = document.getElementById("cta-android-inline");
+    if (ctaAndroidInline) ctaAndroidInline.addEventListener("click", function () { track("lite-cta-android", { source: "inline" }); });
 
     // ─── ad-landing (lite variant) ────────────────────────────────────────
     // Mirror the React app's trackAdLandingOnce so FB/IG/TikTok WebView

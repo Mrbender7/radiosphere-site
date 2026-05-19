@@ -287,10 +287,7 @@ function reportHydrationError(rawMessage: string, source: "error-event" | "conso
     ...(extra ?? {}),
   };
   reportOnce(eventName, dedupeKey, payload);
-  // Also emit the generic event so the existing dashboard keeps working.
-  if (eventName !== "hydration-error") {
-    reportOnce("hydration-error", `generic|${dedupeKey}`, payload);
-  }
+  // (duplicate generic "hydration-error" emission removed — Umami budget cleanup)
   // ─── Targeted CSR rescue ────────────────────────────────────────────────
   // We only auto-trigger force-CSR + reload when:
   //   (a) we're inside a known in-app WebView (FB/IG/TikTok/etc.) — that's where

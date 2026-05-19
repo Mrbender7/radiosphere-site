@@ -151,7 +151,7 @@ html[dir="rtl"] .rtl-flip {
 @keyframes shiba-run {
   0%    { left: 0%;   transform: translate(0, -50%) scaleX(1); }
   45%   { left: 100%; transform: translate(-100%, -50%) scaleX(1); }
-  50%   { left: 100%; transform: translate(-100%, -50%) scaleX(-1); }
+  55%   { left: 100%; transform: translate(-100%, -50%) scaleX(-1); }
   95%   { left: 0%;   transform: translate(0, -50%) scaleX(-1); }
   100%  { left: 0%;   transform: translate(0, -50%) scaleX(1); }
 }
@@ -159,17 +159,21 @@ html[dir="rtl"] .rtl-flip {
   animation: shiba-run 8s linear infinite;
 }
 
-/* Smoke puff at the wall when shiba turns around (synced with 8s shiba-run) */
+/* Smoke puff at the wall — wide opaque window so the flip stays hidden */
 @keyframes shiba-puff-right {
-  0%, 40%   { opacity: 0; transform: translate(0, -50%) scale(0.4); }
-  45%       { opacity: 0.9; transform: translate(0, -50%) scale(1.4); }
-  55%       { opacity: 0; transform: translate(0, -50%) scale(1.8); }
+  0%, 38%   { opacity: 0; transform: translate(0, -50%) scale(0.4); }
+  43%       { opacity: 1; transform: translate(0, -50%) scale(1.3); }
+  50%       { opacity: 1; transform: translate(0, -50%) scale(1.55); }
+  58%       { opacity: 1; transform: translate(0, -50%) scale(1.55); }
+  66%       { opacity: 0; transform: translate(0, -50%) scale(1.9); }
   100%      { opacity: 0; transform: translate(0, -50%) scale(0.4); }
 }
 @keyframes shiba-puff-left {
-  0%, 90%   { opacity: 0; transform: translate(0, -50%) scale(0.4); }
-  95%       { opacity: 0.9; transform: translate(0, -50%) scale(1.4); }
-  100%      { opacity: 0; transform: translate(0, -50%) scale(1.8); }
+  0%, 8%    { opacity: 1; transform: translate(0, -50%) scale(1.55); }
+  16%       { opacity: 0; transform: translate(0, -50%) scale(1.9); }
+  17%, 88%  { opacity: 0; transform: translate(0, -50%) scale(0.4); }
+  93%       { opacity: 1; transform: translate(0, -50%) scale(1.3); }
+  100%      { opacity: 1; transform: translate(0, -50%) scale(1.55); }
 }
 .animate-shiba-puff-right { animation: shiba-puff-right 8s linear infinite; }
 .animate-shiba-puff-left  { animation: shiba-puff-left  8s linear infinite; }

@@ -48,7 +48,6 @@ export const createRoot = ViteReactSSG(
 
 if (isClientEnv && shouldForceCSR) {
   void (async () => {
-    const csrStart = performance.now();
     try {
       const ctx = await createRoot(true);
       const container = document.getElementById("root");

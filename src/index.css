@@ -146,3 +146,15 @@ html[dir="rtl"] body {
 html[dir="rtl"] .rtl-flip {
   transform: scaleX(-1);
 }
+
+/* Shiba running back-and-forth across the fullscreen player title */
+@keyframes shiba-run {
+  0%    { left: 0%;   transform: translate(0, -50%) scaleX(1); }
+  45%   { left: 100%; transform: translate(-100%, -50%) scaleX(1); }
+  50%   { left: 100%; transform: translate(-100%, -50%) scaleX(-1); }
+  95%   { left: 0%;   transform: translate(0, -50%) scaleX(-1); }
+  100%  { left: 0%;   transform: translate(0, -50%) scaleX(1); }
+}
+.animate-shiba-run {
+  animation: shiba-run 8s linear infinite;
+}

@@ -74,12 +74,7 @@ if (isClientEnv && shouldForceCSR) {
         </HelmetProvider>,
       );
       try { (window as unknown as { __rsAppMounted?: boolean }).__rsAppMounted = true; } catch { /* noop */ }
-      // Measure first paint AFTER the CSR remount.
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          try { trackCsrFallbackDuration(performance.now() - csrStart); } catch { /* noop */ }
-        });
-      });
+      // csr-fallback-duration disabled (Umami event-budget cleanup)
       console.log("[RadioSphere] CSR fallback active — hydration bypassed");
     } catch (e) {
       console.error("[RadioSphere] CSR fallback mount failed:", e);

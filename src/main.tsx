@@ -11,24 +11,16 @@ import { createRoot as reactDomCreateRoot } from "react-dom/client";
 import { RouterProvider } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { setForceCsr, shouldForceCsr, FORCE_CSR_KEY } from "./utils/forceCsr";
-import {
-  trackHydrationMismatch,
-  trackCsrFallbackDuration,
-  trackWebViewDetected,
-  cleanUrlPollutingParams,
-  trackUrlCleaned,
-  setupPageviewPerf,
-} from "./lib/analytics-events";
+import { cleanUrlPollutingParams } from "./lib/analytics-events";
+import { trackHydrationMismatch } from "./lib/analytics-events";
 import "./index.css";
 
 // ─── Boot-time diagnostics (safe no-ops in SSR) ──────────────────────────────
+// NOTE: trackWebViewDetected / trackUrlCleaned / setupPageviewPerf were
+// disabled to stay under the Umami 100k events/month free tier. We still
+// strip pollution params from the URL for hygiene, just without emitting.
 if (typeof window !== "undefined") {
-  try { trackWebViewDetected(); } catch { /* noop */ }
-  try {
-    const removed = cleanUrlPollutingParams();
-    if (removed.length > 0) trackUrlCleaned(removed);
-  } catch { /* noop */ }
-  try { setupPageviewPerf(); } catch { /* noop */ }
+  try { cleanUrlPollutingParams(); } catch { /* noop */ }
 }
 
 // ─── CSR fallback (universal) ────────────────────────────────────────────────
@@ -56,7 +48,6 @@ export const createRoot = ViteReactSSG(
 
 if (isClientEnv && shouldForceCSR) {
   void (async () => {
-    const csrStart = performance.now();
     try {
       const ctx = await createRoot(true);
       const container = document.getElementById("root");
@@ -82,12 +73,7 @@ if (isClientEnv && shouldForceCSR) {
         </HelmetProvider>,
       );
       try { (window as unknown as { __rsAppMounted?: boolean }).__rsAppMounted = true; } catch { /* noop */ }
-      // Measure first paint AFTER the CSR remount.
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          try { trackCsrFallbackDuration(performance.now() - csrStart); } catch { /* noop */ }
-        });
-      });
+      // csr-fallback-duration disabled (Umami event-budget cleanup)
       console.log("[RadioSphere] CSR fallback active — hydration bypassed");
     } catch (e) {
       console.error("[RadioSphere] CSR fallback mount failed:", e);
@@ -301,10 +287,7 @@ function reportHydrationError(rawMessage: string, source: "error-event" | "conso
     ...(extra ?? {}),
   };
   reportOnce(eventName, dedupeKey, payload);
-  // Also emit the generic event so the existing dashboard keeps working.
-  if (eventName !== "hydration-error") {
-    reportOnce("hydration-error", `generic|${dedupeKey}`, payload);
-  }
+  // (duplicate generic "hydration-error" emission removed — Umami budget cleanup)
   // ─── Targeted CSR rescue ────────────────────────────────────────────────
   // We only auto-trigger force-CSR + reload when:
   //   (a) we're inside a known in-app WebView (FB/IG/TikTok/etc.) — that's where
@@ -395,16 +378,8 @@ if (typeof window !== "undefined") {
       reportCrash("error", message, { stack, location });
       return;
     }
-    if (message) {
-      umamiTrack("js-error", {
-        name: err instanceof Error ? err.name : "Error",
-        message: trunc(message, 300),
-        location,
-        stack,
-        route: window.location.pathname,
-        ...envInfo(),
-      });
-    }
+    // js-error emission disabled (Umami budget cleanup — js-crash + hydration-error-* cover the actionable cases)
+    void message; void err; void location; void stack;
   });
 
   // React 18 reports hydration mismatches via console.error. Wrap it once to
@@ -452,21 +427,7 @@ if (typeof window !== "undefined") {
     }
   }, true);
 
-  // Visibility into total session loss (long task on first paint, etc.)
-  // We only emit once per session, on first hidden after load.
-  let firstHiddenReported = false;
-  document.addEventListener("visibilitychange", () => {
-    if (document.visibilityState !== "hidden" || firstHiddenReported) return;
-    firstHiddenReported = true;
-    const t = performance.now();
-    if (t < 10_000) {
-      umamiTrack("early-bounce", {
-        ms: Math.round(t),
-        route: window.location.pathname,
-        ...envInfo(),
-      });
-    }
-  });
+  // early-bounce disabled (Umami budget cleanup — high-volume, low-signal)
 
   // PWA install lifecycle — capture the native browser prompt outcome.
   window.addEventListener("beforeinstallprompt", (e) => {

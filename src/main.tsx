@@ -22,13 +22,11 @@ import {
 import "./index.css";
 
 // ─── Boot-time diagnostics (safe no-ops in SSR) ──────────────────────────────
+// NOTE: trackWebViewDetected / trackUrlCleaned / setupPageviewPerf were
+// disabled to stay under the Umami 100k events/month free tier. We still
+// strip pollution params from the URL for hygiene, just without emitting.
 if (typeof window !== "undefined") {
-  try { trackWebViewDetected(); } catch { /* noop */ }
-  try {
-    const removed = cleanUrlPollutingParams();
-    if (removed.length > 0) trackUrlCleaned(removed);
-  } catch { /* noop */ }
-  try { setupPageviewPerf(); } catch { /* noop */ }
+  try { cleanUrlPollutingParams(); } catch { /* noop */ }
 }
 
 // ─── CSR fallback (universal) ────────────────────────────────────────────────

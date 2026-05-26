@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PodcastSphere.be - Cast Receiver</title>
+  <title>Podcast Sphere - Cast Receiver</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
   <style>
@@ -192,28 +192,53 @@
 </head>
 <body>
 
+  <!-- Mascot -->
   <img class="mascot" src="shiba-mascot.png" alt="" aria-hidden="true" />
 
+  <!-- Header -->
   <div class="header">
-    <img class="brand-logo" src="PS_HD.png" alt="PodcastSphere" onerror="this.style.display='none'"/>
-    <h1>PodcastSphere.be</h1>
+    <img class="brand-logo" src="PS_HD.png" alt="Podcast Sphere" onerror="this.style.display='none'"/>
+    <h1>Podcast Sphere</h1>
   </div>
 
+  <!-- Center -->
   <div class="center">
     <div class="genre-animation" id="genreAnimContainer">
+      <!-- Default Podcast Mic animation -->
       <svg viewBox="0 0 80 80" fill="none" stroke="white" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="30" y="16" width="20" height="32" rx="10" stroke-width="2.5"/>
+        
+        <!-- Haut du micro animé (monte et descend doucement) -->
+        <g>
+          <animateTransform 
+            attributeName="transform" 
+            type="translate" 
+            values="0,2; 0,-2; 0,2" 
+            dur="3.5s" 
+            calcMode="spline" 
+            keyTimes="0; 0.5; 1" 
+            keySplines="0.42 0 0.58 1; 0.42 0 0.58 1" 
+            repeatCount="indefinite" />
+          
+          <rect x="30" y="16" width="20" height="32" rx="10" stroke-width="2.5"/>
+          <path d="M26,24 A18,18 0 0,1 54,24" stroke-width="2" opacity="0.3">
+            <animate attributeName="opacity" values="0;0.6;0" dur="2s" repeatCount="indefinite"/>
+          </path>
+          <path d="M18,32 A28,28 0 0,1 62,32" stroke-width="2" opacity="0.3">
+            <animate attributeName="opacity" values="0;0.6;0" dur="2s" repeatCount="indefinite" begin="0.5s"/>
+          </path>
+        </g>
+
+        <!-- Réceptacle et pied fixes -->
         <path d="M20,40 v4 a20,20 0 0,0 40,0 v-4" stroke-width="2.5"/>
         <line x1="40" y1="64" x2="40" y2="74" stroke-width="2.5"/>
         <line x1="28" y1="74" x2="52" y2="74" stroke-width="2.5"/>
-        <path d="M26,24 A18,18 0 0,1 54,24" stroke-width="2" opacity="0.3"><animate attributeName="opacity" values="0;0.6;0" dur="2s" repeatCount="indefinite"/></path>
-        <path d="M18,32 A28,28 0 0,1 62,32" stroke-width="2" opacity="0.3"><animate attributeName="opacity" values="0;0.6;0" dur="2s" repeatCount="indefinite" begin="0.5s"/></path>
       </svg>
     </div>
     <div class="station-name" id="stationName">En attente de l'épisode...</div>
     <div class="station-tags" id="stationTags"></div>
   </div>
 
+  <!-- Mini Player -->
   <div class="mini-player">
     <div class="mini-player-icon" id="miniIcon">
       <img id="miniIconImg" src="" alt="" style="display:none">
@@ -238,8 +263,10 @@
     </div>
   </div>
 
+  <!-- Footer -->
   <div class="footer" id="footerMsg">Contrôlez la lecture depuis votre téléphone</div>
 
+  <!-- Cast Receiver SDK -->
   <script src="//www.gstatic.com/cast/sdk/libs/caf_receiver/v3/cast_receiver_framework.js"></script>
 
   <script>
@@ -385,4 +412,8 @@
 
     const playbackConfig = new cast.framework.PlaybackConfig();
     playbackConfig.autoResumeDuration = 5;
-    playbackConfig.initialBandwidth = 12
+    playbackConfig.initialBandwidth = 128000;
+    context.start({ playbackConfig });
+  </script>
+</body>
+</html>

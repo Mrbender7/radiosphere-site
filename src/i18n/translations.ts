@@ -23,6 +23,8 @@ export const LANGUAGE_OPTIONS: { value: Language; flag: string; flagUrl: string;
 
 const translations = {
   fr: {
+    "seo.title": "RadioSphere — Radio gratuite sans pub | TimeBack Machine",
+    "seo.description": "Écoutez 50 000+ radios gratuites dans le monde entier. Unique : la TimeBack Machine vous permet de réécouter n'importe quelle station jusqu'à 30 min en arrière. Sans pub, sans compte.",
     "nav.home": "Accueil",
     "nav.search": "Recherche",
     "nav.explore": "Rechercher et explorer",
@@ -342,6 +344,8 @@ const translations = {
     "aria.refresh": "Rafraîchir",
   },
   en: {
+    "seo.title": "RadioSphere — Free Ad-Free Radio | TimeBack Machine",
+    "seo.description": "Listen to 50,000+ free radio stations worldwide. Unique: the TimeBack Machine lets you replay any station up to 30 min back. No ads, no account.",
     "nav.home": "Home",
     "nav.search": "Search",
     "nav.explore": "Search & Explore",
@@ -661,6 +665,8 @@ const translations = {
     "aria.refresh": "Refresh",
   },
   es: {
+    "seo.title": "RadioSphere — Radio gratis sin anuncios | TimeBack Machine",
+    "seo.description": "Escucha más de 50 000 radios gratis en todo el mundo. Único: la TimeBack Machine te permite reescuchar cualquier emisora hasta 30 min atrás. Sin anuncios, sin cuenta.",
     "nav.home": "Inicio",
     "nav.search": "Buscar",
     "nav.explore": "Buscar y explorar",
@@ -980,6 +986,8 @@ const translations = {
     "aria.refresh": "Actualizar",
   },
   de: {
+    "seo.title": "RadioSphere — Kostenloses Radio ohne Werbung | TimeBack Machine",
+    "seo.description": "Höre über 50.000 kostenlose Radiosender weltweit. Einzigartig: Die TimeBack Machine lässt dich jeden Sender bis zu 30 Min zurückspulen. Ohne Werbung, ohne Konto.",
     "nav.home": "Startseite",
     "nav.search": "Suche",
     "nav.explore": "Suchen & Entdecken",
@@ -1299,6 +1307,8 @@ const translations = {
     "aria.refresh": "Aktualisieren",
   },
   ja: {
+    "seo.title": "RadioSphere — 広告なしの無料ラジオ | TimeBack Machine",
+    "seo.description": "世界中の50,000以上の無料ラジオ局を聴けます。独自機能：TimeBack Machineで、どの局でも最大30分まで巻き戻して再生できます。広告なし、アカウント不要。",
     "nav.home": "ホーム",
     "nav.search": "検索",
     "nav.explore": "検索と探索",
@@ -1618,6 +1628,8 @@ const translations = {
     "aria.refresh": "更新",
   },
   it: {
+    "seo.title": "RadioSphere — Radio gratis senza pubblicità | TimeBack Machine",
+    "seo.description": "Ascolta oltre 50.000 radio gratuite in tutto il mondo. Unico: la TimeBack Machine ti permette di riascoltare qualsiasi stazione fino a 30 min indietro. Senza pubblicità, senza account.",
     "nav.home": "Home",
     "nav.search": "Cerca",
     "nav.explore": "Cerca ed esplora",
@@ -1936,6 +1948,8 @@ const translations = {
     "aria.refresh": "Aggiorna",
   },
   nl: {
+    "seo.title": "RadioSphere — Gratis radio zonder reclame | TimeBack Machine",
+    "seo.description": "Luister naar 50.000+ gratis radiostations wereldwijd. Uniek: de TimeBack Machine laat je elk station tot 30 min terugspoelen. Geen reclame, geen account.",
     "nav.home": "Home",
     "nav.search": "Zoeken",
     "nav.explore": "Zoeken en ontdekken",
@@ -2254,6 +2268,8 @@ const translations = {
     "aria.refresh": "Vernieuwen",
   },
   pt: {
+    "seo.title": "RadioSphere — Rádio gratuita sem publicidade | TimeBack Machine",
+    "seo.description": "Ouça mais de 50 000 rádios gratuitas em todo o mundo. Único: a TimeBack Machine permite-lhe reouvir qualquer estação até 30 min atrás. Sem publicidade, sem conta.",
     "nav.home": "Início",
     "nav.search": "Pesquisar",
     "nav.explore": "Pesquisar e explorar",
@@ -2572,6 +2588,8 @@ const translations = {
     "aria.refresh": "Atualizar",
   },
   pl: {
+    "seo.title": "RadioSphere — Darmowe radio bez reklam | TimeBack Machine",
+    "seo.description": "Słuchaj ponad 50 000 darmowych stacji radiowych na całym świecie. Unikalne: TimeBack Machine pozwala odtworzyć dowolną stację do 30 min wstecz. Bez reklam, bez konta.",
     "nav.home": "Strona główna",
     "nav.search": "Szukaj",
     "nav.explore": "Szukaj i odkrywaj",
@@ -2890,6 +2908,8 @@ const translations = {
     "aria.refresh": "Odśwież",
   },
   zh: {
+    "seo.title": "RadioSphere — 免费无广告电台 | TimeBack 时光机",
+    "seo.description": "收听全球 50,000+ 免费电台。独家功能：TimeBack 时光机可让您回放任何电台最多 30 分钟。无广告，无需注册。",
     "nav.home": "首页",
     "nav.search": "搜索",
     "nav.explore": "搜索与探索",
@@ -3208,6 +3228,8 @@ const translations = {
     "aria.refresh": "刷新",
   },
   tr: {
+    "seo.title": "RadioSphere — Reklamsız Ücretsiz Radyo | TimeBack Machine",
+    "seo.description": "Dünya çapında 50.000'den fazla ücretsiz radyoyu dinleyin. Eşsiz: TimeBack Machine ile herhangi bir istasyonu 30 dakikaya kadar geri sarabilirsiniz. Reklamsız, hesapsız.",
     "nav.home": "Ana Sayfa",
     "nav.search": "Ara",
     "nav.explore": "Ara ve keşfet",
@@ -3526,6 +3548,8 @@ const translations = {
     "aria.refresh": "Yenile",
   },
   ru: {
+    "seo.title": "RadioSphere — Бесплатное радио без рекламы | TimeBack Machine",
+    "seo.description": "Слушайте более 50 000 бесплатных радиостанций по всему миру. Уникально: TimeBack Machine позволяет перематывать любую станцию до 30 минут назад. Без рекламы, без регистрации.",
     "nav.home": "Главная",
     "nav.search": "Поиск",
     "nav.explore": "Поиск и обзор",
@@ -3844,6 +3868,8 @@ const translations = {
     "aria.refresh": "Обновить",
   },
   id: {
+    "seo.title": "RadioSphere — Radio Gratis Tanpa Iklan | TimeBack Machine",
+    "seo.description": "Dengarkan 50.000+ radio gratis di seluruh dunia. Unik: TimeBack Machine memungkinkan Anda memutar ulang stasiun mana pun hingga 30 menit ke belakang. Tanpa iklan, tanpa akun.",
     "nav.home": "Beranda",
     "nav.search": "Cari",
     "nav.explore": "Cari dan jelajahi",
@@ -4163,6 +4189,8 @@ const translations = {
   },
   ms: {} as Record<string, string>, // populated below from id (mutually intelligible)
   ar: {
+    "seo.title": "راديوسفير — راديو مجاني بدون إعلانات | TimeBack Machine",
+    "seo.description": "استمع إلى أكثر من 50,000 محطة راديو مجانية حول العالم. ميزة فريدة: TimeBack Machine تتيح لك إعادة تشغيل أي محطة حتى 30 دقيقة للوراء. بدون إعلانات، بدون حساب.",
     "nav.home": "الرئيسية",
     "nav.search": "بحث",
     "nav.explore": "بحث واستكشاف",
@@ -4499,5 +4527,19 @@ translations.th = { ...translations.id };
 // Hindi — seeded from English as a temporary fallback until dedicated
 // Hindi strings are added.
 (translations as Record<string, Record<string, string>>)["hi"] = { ...translations.en };
+
+// SEO overrides for seeded languages — provide native title/description even
+// though other strings inherit from their base language.
+translations.ms["seo.title"] = "RadioSphere — Radio Percuma Tanpa Iklan | TimeBack Machine";
+translations.ms["seo.description"] = "Dengar 50,000+ radio percuma di seluruh dunia. Unik: TimeBack Machine membolehkan anda memainkan semula mana-mana stesen sehingga 30 minit ke belakang. Tanpa iklan, tanpa akaun.";
+
+translations.th["seo.title"] = "RadioSphere — วิทยุฟรีไม่มีโฆษณา | TimeBack Machine";
+translations.th["seo.description"] = "ฟังสถานีวิทยุฟรีกว่า 50,000 สถานีทั่วโลกพิเศษ: TimeBack Machine ให้คุณย้อนฟังสถานีใดก็ได้สูงสุด 30 นาที ไม่มีโฆษณา ไม่ต้องสมัคร";
+
+(translations as Record<string, Record<string, string>>)["pt-BR"]["seo.title"] = "RadioSphere — Rádio grátis sem anúncios | TimeBack Machine";
+(translations as Record<string, Record<string, string>>)["pt-BR"]["seo.description"] = "Ouça mais de 50.000 rádios grátis no mundo todo. Único: a TimeBack Machine permite reouvir qualquer estação até 30 min atrás. Sem anúncios, sem conta.";
+
+(translations as Record<string, Record<string, string>>)["hi"]["seo.title"] = "RadioSphere — विज्ञापन-मुक्त मुफ्त रेडियो | TimeBack Machine";
+(translations as Record<string, Record<string, string>>)["hi"]["seo.description"] = "दुनिया भर के 50,000+ मुफ्त रेडियो स्टेशन सुनें। अनोखा: TimeBack Machine आपको किसी भी स्टेशन को 30 मिनट तक पीछे चलाने देता है। कोई विज्ञापन नहीं, कोई खाता नहीं।";
 
 export default translations as unknown as Record<Language, Record<string, string>>;

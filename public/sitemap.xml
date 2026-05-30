@@ -1,28 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://radiosphere.be/</loc>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://radiosphere.be/search</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://radiosphere.be/library</loc>
+    <lastmod>2026-05-30</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://radiosphere.be/about</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://radiosphere.be/privacy</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="fr"        href="https://radiosphere.be/?lang=fr"/>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://radiosphere.be/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://radiosphere.be/?lang=es"/>
+    <xhtml:link rel="alternate" hreflang="de"        href="https://radiosphere.be/?lang=de"/>
+    <xhtml:link rel="alternate" hreflang="it"        href="https://radiosphere.be/?lang=it"/>
+    <xhtml:link rel="alternate" hreflang="nl"        href="https://radiosphere.be/?lang=nl"/>
+    <xhtml:link rel="alternate" hreflang="pt"        href="https://radiosphere.be/?lang=pt"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR"     href="https://radiosphere.be/?lang=pt-BR"/>
+    <xhtml:link rel="alternate" hreflang="pl"        href="https://radiosphere.be/?lang=pl"/>
+    <xhtml:link rel="alternate" hreflang="zh"        href="https://radiosphere.be/?lang=zh"/>
+    <xhtml:link rel="alternate" hreflang="ja"        href="https://radiosphere.be/?lang=ja"/>
+    <xhtml:link rel="alternate" hreflang="tr"        href="https://radiosphere.be/?lang=tr"/>
+    <xhtml:link rel="alternate" hreflang="ru"        href="https://radiosphere.be/?lang=ru"/>
+    <xhtml:link rel="alternate" hreflang="id"        href="https://radiosphere.be/?lang=id"/>
+    <xhtml:link rel="alternate" hreflang="ms"        href="https://radiosphere.be/?lang=ms"/>
+    <xhtml:link rel="alternate" hreflang="th"        href="https://radiosphere.be/?lang=th"/>
+    <xhtml:link rel="alternate" hreflang="ar"        href="https://radiosphere.be/?lang=ar"/>
+    <xhtml:link rel="alternate" hreflang="hi"        href="https://radiosphere.be/?lang=hi"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://radiosphere.be/"/>
   </url>
 </urlset>

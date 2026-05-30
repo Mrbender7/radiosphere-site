@@ -34,33 +34,61 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.json" />
     <meta name="msapplication-TileColor" content="#111111" />
-    <!-- SEO tags managed by react-helmet-async / vite-react-ssg Head component -->
+    <!-- SEO fallback (FR) — overridden client-side by useSEO/SEOLinks for JS-capable crawlers.
+         Social bots (Facebook, Bluesky, LinkedIn) don't run JS, so these defaults ship to them. -->
+    <title>RadioSphere — Radio gratuite sans pub | TimeBack Machine</title>
+    <meta name="description" content="Écoutez 50 000+ radios gratuites dans le monde entier. Unique : la TimeBack Machine vous permet de réécouter n'importe quelle station jusqu'à 30 min en arrière. Sans pub, sans compte." />
+    <meta name="author" content="Franck Malherbe" />
+    <meta name="application-name" content="RadioSphere" />
+    <meta name="robots" content="index, follow" />
     <meta name="theme-color" content="#111111" />
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="RadioSphere.be" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:url" content="https://radiosphere.be/" />
+    <meta property="og:title" content="RadioSphere — Radio gratuite sans pub | TimeBack Machine" />
+    <meta property="og:description" content="Écoutez 50 000+ radios gratuites dans le monde entier. Unique : la TimeBack Machine vous permet de réécouter n'importe quelle station jusqu'à 30 min en arrière. Sans pub, sans compte." />
     <meta property="og:image" content="https://radiosphere.be/og-image.jpg">
     <meta property="og:image:type" content="image/jpeg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="628">
     <meta property="og:image:alt" content="RadioSphere.be — Free Global Radio">
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="RadioSphere — Radio gratuite sans pub | TimeBack Machine">
+    <meta name="twitter:description" content="Écoutez 50 000+ radios gratuites dans le monde entier. Unique : la TimeBack Machine vous permet de réécouter n'importe quelle station jusqu'à 30 min en arrière. Sans pub, sans compte.">
     <meta name="twitter:image" content="https://radiosphere.be/og-image.jpg">
 
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "WebApplication",
-      "name": "RadioSphere.be",
+      "name": "RadioSphere",
       "url": "https://radiosphere.be",
-      "description": "Lecteur radio gratuit sans publicité avec 50 000+ stations. TimeBack Machine exclusive pour réécouter le direct.",
-      "applicationCategory": "MultimediaApplication",
-      "operatingSystem": "Web",
-      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
-      "featureList": ["TimeBack Machine", "Streaming HD", "Chromecast", "Enregistrement MP3", "50 000+ stations", "230+ pays", "Zéro publicité"],
-      "keywords": "radio gratuite, radio sans pub, timeback machine, écouter radio en ligne, streaming radio, radio en direct"
+      "description": "Free radio streaming app with 50,000+ stations worldwide and the unique TimeBack Machine feature to replay live radio.",
+      "applicationCategory": "MusicApplication",
+      "operatingSystem": "Web, Android",
+      "inLanguage": ["fr","en","es","de","it","nl","pt","pt-BR","pl","zh","ja","tr","ru","id","ms","th","ar","hi"],
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      },
+      "author": {
+        "@type": "Person",
+        "name": "Franck Malherbe"
+      },
+      "sameAs": [
+        "https://play.google.com/store/apps/details?id=be.radiosphere.app",
+        "https://www.facebook.com/profile.php?id=61575475057830",
+        "https://www.instagram.com/radiosphere.be/",
+        "https://bsky.app/profile/radiospherebe.bsky.social",
+        "https://www.tiktok.com/@radiosphere.be"
+      ]
     }
     </script>
+
+
 
     <!-- Umami Analytics -->
     <script defer src="https://cloud.umami.is/script.js" data-website-id="73a30cfd-4d45-43c2-b296-c4d3a39cd898"></script>

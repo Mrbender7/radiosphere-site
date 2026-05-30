@@ -10,6 +10,7 @@ import { PlayerProvider } from "@/contexts/PlayerContext";
 import { StreamBufferProvider } from "@/contexts/StreamBufferContext";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import Index from "./pages/Index";
+import { SEOLinks } from "@/components/SEOLinks";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +31,7 @@ const App = () => (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <LanguageProvider>
+          <SEOLinks />
           <FavoritesProvider>
             <CoreProviders>
               <Toaster />

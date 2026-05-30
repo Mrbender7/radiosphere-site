@@ -23,6 +23,8 @@ export const LANGUAGE_OPTIONS: { value: Language; flag: string; flagUrl: string;
 
 const translations = {
   fr: {
+    "seo.title": "RadioSphere — Radio gratuite sans pub | TimeBack Machine",
+    "seo.description": "Écoutez 50 000+ radios gratuites dans le monde entier. Unique : la TimeBack Machine vous permet de réécouter n'importe quelle station jusqu'à 30 min en arrière. Sans pub, sans compte.",
     "nav.home": "Accueil",
     "nav.search": "Recherche",
     "nav.explore": "Rechercher et explorer",

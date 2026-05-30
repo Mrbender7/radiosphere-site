@@ -1,67 +1,62 @@
-## Objectif
+# Refonte SEO complète RadioSphere.be
 
-Ajouter un système d'auto-guérison Vanilla JS dans `public/lite.html` : les flux qui échouent 3 fois sont bannis et remplacés automatiquement par des stations de réserve, sans toucher à React.
+## Constat existant
+- `LanguageContext.tsx` met déjà `lang` et `dir` (rtl pour `ar`) sur `<html>` à chaque changement → consigne #1 déjà couverte.
+- `react-helmet-async` installé, `HelmetProvider` monté dans `main.tsx`.
+- `index.html` contient un JSON-LD à remplacer + OG partiels, mais pas de `<title>` ni `<meta description>` en dur.
+- `public/sitemap.xml` et `public/robots.txt` existent → à remplacer.
+- `src/i18n/translations.ts` couvre les 18 langues.
 
-## Règles strictes
+## 1. `index.html` — fallback statique pour crawlers sociaux
+GitHub Pages = pas de SSR, les bots Facebook/Bluesky/LinkedIn ne lisent pas le JS. On enrichit le `<head>` statique :
+- `<title>RadioSphere — Radio gratuite sans pub | TimeBack Machine</title>`
+- `<meta name="description" content="…">` (texte FR fourni)
+- `<meta name="author" content="Franck Malherbe">`
+- `<meta name="application-name" content="RadioSphere">`
+- `<meta name="robots" content="index, follow">`
+- `<meta property="og:locale" content="fr_FR">`
+- `<meta property="og:title">`, `<meta property="og:description">`, `<meta property="og:url" content="https://radiosphere.be/">`
+- `<meta name="twitter:title">`, `<meta name="twitter:description">` (twitter:card/image déjà présents, conservés)
+- Remplacement du `<script type="application/ld+json">` par le bloc `WebApplication` (operatingSystem "Web, Android", 18 `inLanguage`, 5 `sameAs`)
+- Pas de canonical/hreflang statiques (Helmet les gère pour éviter les doublons).
 
-- **Préfixe obligatoire** sur toutes les clés localStorage : `rs_lite_` (zéro collision avec l'app React).
-- **Aucune dépendance** ajoutée, pas de React, pas de modification d'architecture.
-- Tous les accès `localStorage` enveloppés dans `try/catch` (WebView FB/IG peuvent throw).
+## 2. Nouveau hook `src/hooks/useSEO.ts`
+Sans dépendance supplémentaire. À chaque changement de `language` :
+- `document.title = t("seo.title")`
+- Met à jour via `querySelector` + fallback création : `meta[name=description]`, `meta[property="og:title"]`, `meta[property="og:description"]`, `meta[name="twitter:title"]`, `meta[name="twitter:description"]`
+- Idempotent, marquage `data-seo-managed="true"`.
 
-## Implémentation
+## 3. Nouveau composant `src/components/SEOLinks.tsx`
+Utilise `<Helmet>` uniquement pour les `<link>` (qui ne dédupent pas naturellement) :
+- `<link rel="canonical" href="https://radiosphere.be/">`
+- 18 `<link rel="alternate" hreflang="…" href="https://radiosphere.be/?lang=…">` + `x-default`
 
-### 1. Constantes et helpers (en tête du `<script>`)
+Monté une fois dans `src/App.tsx` à l'intérieur du `LanguageProvider`, à côté de l'appel du hook `useSEO`.
 
-```text
-LIMIT_PER_CATEGORY = 20
-KEY_ERRORS  = "rs_lite_errors_"          // + station.n
-KEY_BANNED  = "rs_lite_banned_stations"  // JSON array de noms
-MAX_STRIKES = 3
+## 4. `src/i18n/translations.ts`
+Ajout des clés `seo.title` et `seo.description` dans les 18 langues (versions traduites des textes FR fournis). Pour `ms` et `th` (actuellement à fallback), ajout des 2 clés en propre.
+
+## 5. `public/sitemap.xml` — remplacement intégral
+Contenu exact fourni : 1 URL + 18 `xhtml:link` + `x-default`, `<lastmod>2026-05-30</lastmod>`.
+
+## 6. `public/robots.txt` — remplacement intégral
 ```
+User-agent: *
+Allow: /
+Disallow: /lite.html
 
-Helpers ajoutés :
-- `lsGet(key)` / `lsSet(key, val)` — wrappers try/catch
-- `getBanned()` → `string[]` (parse JSON, fallback `[]`)
-- `addBanned(name)` → push + dedupe + persist
-- `getStrikes(name)` / `bumpStrikes(name)` → renvoie le nouveau compteur
-
-### 2. Filtrage au rendu (`render()`)
-
-Avant la boucle de génération des cartes :
-1. Lire `banned = getBanned()`
-2. Filtrer la liste source : `STATIONS.filter(s => banned.indexOf(s.n) === -1)`
-3. Appliquer ensuite le filtre catégorie + recherche existants
-4. Slicer à `LIMIT_PER_CATEGORY` (20) — le reste reste en réserve naturelle
-
-Les stations bannies ne sont jamais injectées dans le DOM ; la réserve remonte automatiquement.
-
-### 3. Tracking des strikes (`.catch` de `safePlay`)
-
-Dans le `.catch(error)` du `audioPlayer.play()` :
-```text
-const n = currentStation.n;
-const strikes = bumpStrikes(n);          // +1 et persist
-if (strikes >= MAX_STRIKES) addBanned(n);
-if (window.umami) umami.track('stream-dead-lite', { station: n });
-re-render() pour évincer la carte si elle vient d'être bannie
+Sitemap: https://radiosphere.be/sitemap.xml
 ```
+(Disallow `/lite.html` conservé comme demandé.)
 
-Également déclenché sur l'event `error` de l'`<audio>` (même cause, flux mort serveur-side).
-
-### 4. Reset partiel sur succès
-
-Sur l'event `playing` (lecture qui démarre vraiment), supprimer `rs_lite_errors_<name>` pour éviter qu'une station fiable mais ayant eu un hoquet ponctuel finisse bannie au bout de plusieurs sessions.
-
-### 5. Télémétrie
-
-`umami.track('stream-dead-lite', { station: name })` dans le `.catch`, guard `typeof window.umami !== 'undefined'`.
-
-## Fichier modifié
-
-- `public/lite.html` uniquement (script inline Vanilla JS)
+## Fichiers touchés
+- ✏️ `index.html`
+- ➕ `src/hooks/useSEO.ts`
+- ➕ `src/components/SEOLinks.tsx`
+- ✏️ `src/App.tsx`
+- ✏️ `src/i18n/translations.ts`
+- ✏️ `public/sitemap.xml`
+- ✏️ `public/robots.txt`
 
 ## Hors scope
-
-- Pas de UI d'admin pour vider la liste bannie (les clés sont visibles via DevTools si besoin de debug)
-- Pas de TTL sur le bannissement (peut être ajouté plus tard si demandé)
-- Aucun fichier React touché
+Routing, lecteur audio, API Radio Browser, Cast, redirect WebView, CSP, OG image existante, mécanique `lang`/`dir` (déjà OK).

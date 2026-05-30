@@ -1,4 +1,4 @@
-import { Helmet } from "react-helmet-async";
+import { Head } from "vite-react-ssg";
 import { useSEO } from "@/hooks/useSEO";
 
 const SITE_URL = "https://radiosphere.be";
@@ -9,15 +9,21 @@ const HREFLANGS = [
 ] as const;
 
 /**
- * Injects canonical + hreflang alternates via react-helmet-async, and
- * keeps <title>/<meta> SEO tags in sync with the active language.
+ * Injects canonical + hreflang alternates via vite-react-ssg's <Head> (so they
+ * land in the static HTML), and keeps <title>/<meta> SEO tags in sync with the
+ * active language on the client via useSEO().
+ *
+ * NOTE: we deliberately do NOT use react-helmet-async's <Helmet> here — the
+ * SSG boot path in main.tsx does not wrap the tree with <HelmetProvider>, so
+ * rendering <Helmet> during pre-render crashes with
+ * `Cannot read properties of undefined (reading 'add')`.
  *
  * Mounted once inside <LanguageProvider> in App.tsx.
  */
 export function SEOLinks() {
   useSEO();
   return (
-    <Helmet>
+    <Head>
       <link rel="canonical" href={`${SITE_URL}/`} />
       {HREFLANGS.map((lang) => (
         <link
@@ -28,6 +34,6 @@ export function SEOLinks() {
         />
       ))}
       <link rel="alternate" hrefLang="x-default" href={`${SITE_URL}/`} />
-    </Helmet>
+    </Head>
   );
 }

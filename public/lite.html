@@ -644,20 +644,20 @@
   // ─── Banner i18n (independent IIFE so a parse error can't break the player) ─
   (function () {
     var translations = {
-      "en": { title: "In-app browser detected! 🐕", text: "Tap the three dots <b>[ ⋮ ]</b> and select <b>'Open in browser'</b> for the full experience (TimeBack, 50k+ stations).", btn: "Get the Android App" },
-      "fr": { title: "Navigateur limité détecté ! 🐕", text: "Appuyez sur les trois points <b>[ ⋮ ]</b> et choisissez <b>'Ouvrir dans le navigateur'</b> pour l'expérience complète.", btn: "Installer l'App Android" },
-      "es": { title: "¡Navegador integrado detectado! 🐕", text: "Toca los tres puntos <b>[ ⋮ ]</b> y selecciona <b>'Abrir en el navegador'</b> para la experiencia completa.", btn: "Obtener la App" },
-      "de": { title: "In-App-Browser erkannt! 🐕", text: "Tippen Sie auf die drei Punkte <b>[ ⋮ ]</b> und wählen Sie <b>'Im Browser öffnen'</b> für das volle Erlebnis.", btn: "Android App holen" },
-      "it": { title: "Browser in-app rilevato! 🐕", text: "Tocca i tre puntini <b>[ ⋮ ]</b> e seleziona <b>'Apri nel browser'</b> per l'esperienza completa.", btn: "Scarica l'App" },
-      "pt": { title: "Navegador integrado detectado! 🐕", text: "Toque nos três pontos <b>[ ⋮ ]</b> e selecione <b>'Abrir no navegador'</b> para a experiência completa.", btn: "Baixar o App" },
-      "nl": { title: "In-app browser gedetecteerd! 🐕", text: "Tik op de drie puntjes <b>[ ⋮ ]</b> en selecteer <b>'Openen in browser'</b> voor de volledige ervaring.", btn: "Download de App" },
-      "pl": { title: "Wykryto przeglądarkę w aplikacji! 🐕", text: "Stuknij trzy kropki <b>[ ⋮ ]</b> i wybierz <b>'Otwórz w przeglądarce'</b>, aby uzyskać pełne wrażenia.", btn: "Pobierz Aplikację" },
-      "ja": { title: "アプリ内ブラウザを検出しました！ 🐕", text: "完全な機能を利用するには、3つの点 <b>[ ⋮ ]</b> をタップし、<b>「ブラウザで開く」</b>を選択してください。", btn: "アプリを取得" },
-      "zh": { title: "检测到应用内浏览器！ 🐕", text: "请点击三个点 <b>[ ⋮ ]</b> 并选择 <b>“在浏览器中打开”</b> 以获得完整体验。", btn: "获取应用" },
-      "ko": { title: "인앱 브라우저 감지됨! 🐕", text: "전체 기능을 보려면 세 개의 점 <b>[ ⋮ ]</b> 을 탭하고 <b>'브라우저에서 열기'</b>를 선택하세요.", btn: "앱 다운로드" },
-      "ar": { title: "تم اكتشاف متصفح داخل التطبيق! 🐕", text: "انقر على النقاط الثلاث <b>[ ⋮ ]</b> وحدد <b>'فتح في المتصفح'</b> للحصول على التجربة الكاملة.", btn: "احصل على التطبيق" },
-      "hi": { title: "इन-ऐप ब्राउज़र का पता चला! 🐕", text: "पूरे अनुभव के लिए तीन बिंदुओं <b>[ ⋮ ]</b> पर टैप करें और <b>'ब्राउज़र में खोलें'</b> चुनें।", btn: "ऐप डाउनलोड करें" },
-      "ru": { title: "Обнаружен встроенный браузер! 🐕", text: "Нажмите на три точки <b>[ ⋮ ]</b> и выберите <b>«Открыть в браузере»</b> для полного доступа.", btn: "Скачать приложение" }
+      "en": { title: "In-app browser detected! 🐕", text: "Tap the three dots <b>[ ⋮ ]</b> and select <b>'Open in browser'</b> for the full experience (TimeBack, 50k+ stations).", btn: "Get the Android App", full: "Open full site" },
+      "fr": { title: "Navigateur limité détecté ! 🐕", text: "Appuyez sur les trois points <b>[ ⋮ ]</b> et choisissez <b>'Ouvrir dans le navigateur'</b> pour l'expérience complète.", btn: "Installer l'App Android", full: "Ouvrir le site complet" },
+      "es": { title: "¡Navegador integrado detectado! 🐕", text: "Toca los tres puntos <b>[ ⋮ ]</b> y selecciona <b>'Abrir en el navegador'</b> para la experiencia completa.", btn: "Obtener la App", full: "Abrir el sitio completo" },
+      "de": { title: "In-App-Browser erkannt! 🐕", text: "Tippen Sie auf die drei Punkte <b>[ ⋮ ]</b> und wählen Sie <b>'Im Browser öffnen'</b> für das volle Erlebnis.", btn: "Android App holen", full: "Vollständige Seite öffnen" },
+      "it": { title: "Browser in-app rilevato! 🐕", text: "Tocca i tre puntini <b>[ ⋮ ]</b> e seleziona <b>'Apri nel browser'</b> per l'esperienza completa.", btn: "Scarica l'App", full: "Apri il sito completo" },
+      "pt": { title: "Navegador integrado detectado! 🐕", text: "Toque nos três pontos <b>[ ⋮ ]</b> e selecione <b>'Abrir no navegador'</b> para a experiência completa.", btn: "Baixar o App", full: "Abrir site completo" },
+      "nl": { title: "In-app browser gedetecteerd! 🐕", text: "Tik op de drie puntjes <b>[ ⋮ ]</b> en selecteer <b>'Openen in browser'</b> voor de volledige ervaring.", btn: "Download de App", full: "Volledige site openen" },
+      "pl": { title: "Wykryto przeglądarkę w aplikacji! 🐕", text: "Stuknij trzy kropki <b>[ ⋮ ]</b> i wybierz <b>'Otwórz w przeglądarce'</b>, aby uzyskać pełne wrażenia.", btn: "Pobierz Aplikację", full: "Otwórz pełną wersję" },
+      "ja": { title: "アプリ内ブラウザを検出しました！ 🐕", text: "完全な機能を利用するには、3つの点 <b>[ ⋮ ]</b> をタップし、<b>「ブラウザで開く」</b>を選択してください。", btn: "アプリを取得", full: "フルサイトを開く" },
+      "zh": { title: "检测到应用内浏览器！ 🐕", text: "请点击三个点 <b>[ ⋮ ]</b> 并选择 <b>“在浏览器中打开”</b> 以获得完整体验。", btn: "获取应用", full: "打开完整网站" },
+      "ko": { title: "인앱 브라우저 감지됨! 🐕", text: "전체 기능을 보려면 세 개의 점 <b>[ ⋮ ]</b> 을 탭하고 <b>'브라우저에서 열기'</b>를 선택하세요.", btn: "앱 다운로드", full: "전체 사이트 열기" },
+      "ar": { title: "تم اكتشاف متصفح داخل التطبيق! 🐕", text: "انقر على النقاط الثلاث <b>[ ⋮ ]</b> وحدد <b>'فتح في المتصفح'</b> للحصول على التجربة الكاملة.", btn: "احصل على التطبيق", full: "فتح الموقع الكامل" },
+      "hi": { title: "इन-ऐप ब्राउज़र का पता चला! 🐕", text: "पूरे अनुभव के लिए तीन बिंदुओं <b>[ ⋮ ]</b> पर टैप करें और <b>'ब्राउज़र में खोलें'</b> चुनें।", btn: "ऐप डाउनलोड करें", full: "पूरी साइट खोलें" },
+      "ru": { title: "Обнаружен встроенный браузер! 🐕", text: "Нажмите на три точки <b>[ ⋮ ]</b> и выберите <b>«Открыть в браузере»</b> для полного доступа.", btn: "Скачать приложение", full: "Открыть полную версию" }
     };
     try {
       var userLang = ((navigator.language || navigator.userLanguage || "en").split("-")[0] || "en").toLowerCase();
@@ -665,9 +665,11 @@
       var elT = document.getElementById("banner-title");
       var elX = document.getElementById("banner-text");
       var elB = document.getElementById("banner-btn");
+      var elF = document.getElementById("banner-full");
       if (elT) elT.innerHTML = t.title;
       if (elX) elX.innerHTML = t.text;
       if (elB) elB.innerText = t.btn;
+      if (elF) elF.innerText = t.full;
       if (userLang === "ar" || userLang === "he" || userLang === "fa") {
         document.documentElement.setAttribute("dir", "rtl");
       }

@@ -4,8 +4,8 @@ import { useSEO } from "@/hooks/useSEO";
 const SITE_URL = "https://radiosphere.be";
 
 const HREFLANGS = [
-  "fr", "en", "es", "de", "it", "nl", "pt", "pt-BR",
-  "pl", "zh", "ja", "tr", "ru", "id", "ms", "th", "ar", "hi",
+  "fr", "en", "es", "de", "it", "nl", "sv", "pt", "pt-BR",
+  "pl", "zh", "ja", "tr", "ru", "uk", "id", "ms", "th", "ar", "hi",
 ] as const;
 
 /**

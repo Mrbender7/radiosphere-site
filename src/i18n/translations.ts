@@ -1,4 +1,4 @@
-export type Language = "fr" | "en" | "es" | "de" | "ja" | "it" | "nl" | "pt" | "pt-BR" | "pl" | "zh" | "tr" | "ru" | "id" | "ms" | "th" | "ar" | "hi";
+export type Language = "fr" | "en" | "es" | "de" | "ja" | "it" | "nl" | "pt" | "pt-BR" | "pl" | "zh" | "tr" | "ru" | "uk" | "sv" | "id" | "ms" | "th" | "ar" | "hi";
 
 export const LANGUAGE_OPTIONS: { value: Language; flag: string; flagUrl: string; label: string }[] = [
   { value: "fr", flag: "🇫🇷", flagUrl: "https://flagcdn.com/w40/fr.png", label: "Français" },
@@ -7,6 +7,7 @@ export const LANGUAGE_OPTIONS: { value: Language; flag: string; flagUrl: string;
   { value: "de", flag: "🇩🇪", flagUrl: "https://flagcdn.com/w40/de.png", label: "Deutsch" },
   { value: "it", flag: "🇮🇹", flagUrl: "https://flagcdn.com/w40/it.png", label: "Italiano" },
   { value: "nl", flag: "🇳🇱", flagUrl: "https://flagcdn.com/w40/nl.png", label: "Nederlands" },
+  { value: "sv", flag: "🇸🇪", flagUrl: "https://flagcdn.com/w40/se.png", label: "Svenska" },
   { value: "pt", flag: "🇵🇹", flagUrl: "https://flagcdn.com/w40/pt.png", label: "Português" },
   { value: "pt-BR", flag: "🇧🇷", flagUrl: "https://flagcdn.com/w40/br.png", label: "Português (Brasil)" },
   { value: "hi", flag: "🇮🇳", flagUrl: "https://flagcdn.com/w40/in.png", label: "हिन्दी" },
@@ -15,6 +16,7 @@ export const LANGUAGE_OPTIONS: { value: Language; flag: string; flagUrl: string;
   { value: "ja", flag: "🇯🇵", flagUrl: "https://flagcdn.com/w40/jp.png", label: "日本語" },
   { value: "tr", flag: "🇹🇷", flagUrl: "https://flagcdn.com/w40/tr.png", label: "Türkçe" },
   { value: "ru", flag: "🇷🇺", flagUrl: "https://flagcdn.com/w40/ru.png", label: "Русский" },
+  { value: "uk", flag: "🇺🇦", flagUrl: "https://flagcdn.com/w40/ua.png", label: "Українська" },
   { value: "id", flag: "🇮🇩", flagUrl: "https://flagcdn.com/w40/id.png", label: "Bahasa Indonesia" },
   { value: "ms", flag: "🇲🇾", flagUrl: "https://flagcdn.com/w40/my.png", label: "Bahasa Malaysia" },
   { value: "th", flag: "🇹🇭", flagUrl: "https://flagcdn.com/w40/th.png", label: "ภาษาไทย" },
@@ -4510,6 +4512,8 @@ const translations = {
     "aria.refresh": "تحديث",
   },
   th: {} as Record<string, string>,
+  uk: {} as Record<string, string>,
+  sv: {} as Record<string, string>,
 };
 
 // Bahasa Malaysia & Bahasa Indonesia share strong mutual intelligibility.
@@ -4541,5 +4545,17 @@ translations.th["seo.description"] = "ฟังสถานีวิทยุฟ
 
 (translations as Record<string, Record<string, string>>)["hi"]["seo.title"] = "RadioSphere — विज्ञापन-मुक्त मुफ्त रेडियो | TimeBack Machine";
 (translations as Record<string, Record<string, string>>)["hi"]["seo.description"] = "दुनिया भर के 50,000+ मुफ्त रेडियो स्टेशन सुनें। अनोखा: TimeBack Machine आपको किसी भी स्टेशन को 30 मिनट तक पीछे चलाने देता है। कोई विज्ञापन नहीं, कोई खाता नहीं।";
+
+// Ukrainian — seeded from English as a temporary fallback until dedicated
+// Ukrainian strings are added. We deliberately do NOT seed from Russian.
+(translations as Record<string, Record<string, string>>)["uk"] = { ...translations.en };
+translations.uk["seo.title"] = "RadioSphere — Безкоштовне радіо без реклами | TimeBack Machine";
+translations.uk["seo.description"] = "Слухайте 50 000+ безкоштовних радіостанцій з усього світу. Унікально: TimeBack Machine дозволяє перемотати будь-яку станцію до 30 хвилин назад. Без реклами, без реєстрації.";
+
+// Swedish — seeded from English as a temporary fallback until dedicated
+// Swedish strings are added.
+(translations as Record<string, Record<string, string>>)["sv"] = { ...translations.en };
+translations.sv["seo.title"] = "RadioSphere — Gratis radio utan reklam | TimeBack Machine";
+translations.sv["seo.description"] = "Lyssna på 50 000+ gratis radiostationer från hela världen. Unikt: TimeBack Machine låter dig spola tillbaka vilken station som helst upp till 30 minuter. Ingen reklam, inget konto.";
 
 export default translations as unknown as Record<Language, Record<string, string>>;

@@ -467,6 +467,16 @@
       // else keep default radio waves
     }
 
+    function normalizeTags(rawTags) {
+      if (Array.isArray(rawTags)) {
+        return rawTags.map(tag => String(tag).trim()).filter(Boolean);
+      }
+      if (typeof rawTags === 'string') {
+        return rawTags.split(/[,;|•]/).map(tag => tag.trim()).filter(Boolean);
+      }
+      return [];
+    }
+
     // ─── Cast Receiver Setup ───────────────────────────────────────────
     const context = cast.framework.CastReceiverContext.getInstance();
     const playerManager = context.getPlayerManager();
@@ -487,45 +497,39 @@
           // v2.5.4: Stream URL is sent as-is (resolved by sender, no HTTPS forcing)
           console.log('[RS Receiver] Loading stream:', media.contentId, 'contentType:', media.contentType);
 
-          const title = media.metadata?.title || 'Station';
-          const imageUrl = media.metadata?.images?.[0]?.url || '';
-          const tags = media.customData?.tags || [];
+          try {
+            const title = media.metadata?.title || 'Station';
+            const imageUrl = media.metadata?.images?.[0]?.url || '';
+            const tags = normalizeTags(media.customData?.tags);
 
-          // Update UI
-          document.getElementById('stationName').textContent = title;
-          document.getElementById('miniName').textContent = title;
+            // Update UI only; never modify or block the media LOAD request.
+            document.getElementById('stationName').textContent = title;
+            document.getElementById('miniName').textContent = title;
 
-          // Tags display
-          const tagsEl = document.getElementById('stationTags');
-          if (tags.length > 0) {
-            tagsEl.textContent = tags.slice(0, 4).join(' • ');
-          } else {
-            tagsEl.textContent = '';
+            const tagsEl = document.getElementById('stationTags');
+            tagsEl.textContent = tags.length > 0 ? tags.slice(0, 4).join(' • ') : '';
+
+            const iconImg = document.getElementById('miniIconImg');
+            if (imageUrl) {
+              iconImg.src = imageUrl.replace('http://', 'https://');
+              iconImg.style.display = 'block';
+              iconImg.onerror = () => { iconImg.style.display = 'none'; };
+            } else {
+              iconImg.style.display = 'none';
+            }
+
+            const genre = detectGenre(tags);
+            setGenreAnimation(genre);
+          } catch (uiError) {
+            console.warn('[RS Receiver] UI update failed; continuing media LOAD:', uiError);
           }
-
-          // Station icon
-          const iconImg = document.getElementById('miniIconImg');
-          if (imageUrl) {
-            iconImg.src = imageUrl.replace('http://', 'https://');
-            iconImg.style.display = 'block';
-            iconImg.onerror = () => { iconImg.style.display = 'none'; };
-          } else {
-            iconImg.style.display = 'none';
-          }
-
-          // Genre animation
-          const genre = detectGenre(tags);
-          setGenreAnimation(genre);
         }
         return request;
       }
     );
 
-    // Start receiver with PlaybackConfig optimized for live audio streams
-    const playbackConfig = new cast.framework.PlaybackConfig();
-    playbackConfig.autoResumeDuration = 5;
-    playbackConfig.initialBandwidth = 128000;
-    context.start({ playbackConfig });
+    // Keep CAF defaults for stream handling, like the old working receiver.
+    context.start();
   </script>
 </body>
 </html>

@@ -3,31 +3,7 @@ import { RadioStation } from "@/types/radio";
 import { isInAppBrowser } from "@/utils/inAppBrowser";
 import { isNative as isCapacitorNativeEnv, loadCapacitorPlugin } from "@/utils/nativeBridge";
 
-// Custom RadioSphere receiver registered in Google Cast Console.
-const CAST_APP_ID = "65257ADB";
-
-function detectCastContentType(station: RadioStation): string {
-  const codec = (station.codec || "").toLowerCase();
-  if (codec.includes("aac")) return "audio/aac";
-  if (codec.includes("mp4") || codec.includes("m4a")) return "audio/mp4";
-  if (codec.includes("ogg") || codec.includes("opus")) return "audio/ogg";
-  if (codec.includes("flac")) return "audio/flac";
-  if (codec.includes("wav")) return "audio/wav";
-  if (codec.includes("mp3") || codec.includes("mpeg")) return "audio/mpeg";
-
-  const url = (station.streamUrl || "").toLowerCase().split("?")[0];
-  if (url.endsWith(".m3u8")) return "application/vnd.apple.mpegurl";
-  if (url.endsWith(".mpd")) return "application/dash+xml";
-  if (url.endsWith(".aac")) return "audio/aac";
-  if (url.endsWith(".m4a")) return "audio/mp4";
-  if (url.endsWith(".ogg") || url.endsWith(".oga") || url.endsWith(".opus")) return "audio/ogg";
-  if (url.endsWith(".flac")) return "audio/flac";
-  if (url.endsWith(".wav")) return "audio/wav";
-  if (url.endsWith(".m3u")) return "audio/x-mpegurl";
-  if (url.endsWith(".pls")) return "audio/x-scpls";
-
-  return "audio/mpeg";
-}
+const CAST_APP_ID = "CC1AD845";
 
 declare global {
   interface Window {

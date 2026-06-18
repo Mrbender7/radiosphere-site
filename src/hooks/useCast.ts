@@ -3,8 +3,31 @@ import { RadioStation } from "@/types/radio";
 import { isInAppBrowser } from "@/utils/inAppBrowser";
 import { isNative as isCapacitorNativeEnv, loadCapacitorPlugin } from "@/utils/nativeBridge";
 
-// v2.4.7: Use Google Default Media Receiver for universal compatibility
-const CAST_APP_ID = "CC1AD845";
+// Custom RadioSphere receiver registered in Google Cast Console.
+const CAST_APP_ID = "65257ADB";
+
+function detectCastContentType(station: RadioStation): string {
+  const codec = (station.codec || "").toLowerCase();
+  if (codec.includes("aac")) return "audio/aac";
+  if (codec.includes("mp4") || codec.includes("m4a")) return "audio/mp4";
+  if (codec.includes("ogg") || codec.includes("opus")) return "audio/ogg";
+  if (codec.includes("flac")) return "audio/flac";
+  if (codec.includes("wav")) return "audio/wav";
+  if (codec.includes("mp3") || codec.includes("mpeg")) return "audio/mpeg";
+
+  const url = (station.streamUrl || "").toLowerCase().split("?")[0];
+  if (url.endsWith(".m3u8")) return "application/vnd.apple.mpegurl";
+  if (url.endsWith(".mpd")) return "application/dash+xml";
+  if (url.endsWith(".aac")) return "audio/aac";
+  if (url.endsWith(".m4a")) return "audio/mp4";
+  if (url.endsWith(".ogg") || url.endsWith(".oga") || url.endsWith(".opus")) return "audio/ogg";
+  if (url.endsWith(".flac")) return "audio/flac";
+  if (url.endsWith(".wav")) return "audio/wav";
+  if (url.endsWith(".m3u")) return "audio/x-mpegurl";
+  if (url.endsWith(".pls")) return "audio/x-scpls";
+
+  return "audio/mpeg";
+}
 
 declare global {
   interface Window {
@@ -322,8 +345,9 @@ export function useCast() {
           if (!session) return;
 
           const chr = window.chrome;
-          // v2.5.4: Send stream URL as-is (no HTTPS forcing — was breaking HTTP-only streams)
-          const mediaInfo = new chr.cast.media.MediaInfo(station.streamUrl, "audio/*");
+          const contentType = detectCastContentType(station);
+          // Send stream URL as-is (no HTTPS forcing — was breaking HTTP-only streams)
+          const mediaInfo = new chr.cast.media.MediaInfo(station.streamUrl, contentType);
           mediaInfo.streamType = chr.cast.media.StreamType.LIVE;
           mediaInfo.metadata = new chr.cast.media.MusicTrackMediaMetadata();
           mediaInfo.metadata.title = station.name;
@@ -341,7 +365,7 @@ export function useCast() {
 
           const request = new chr.cast.media.LoadRequest(mediaInfo);
           session.loadMedia(request).then(
-            () => console.log("[RadioSphere][Cast] Media loaded"),
+            () => console.log("[RadioSphere][Cast] Media loaded", { contentType, url: station.streamUrl }),
             (err: any) => console.warn("[RadioSphere][Cast] Load error:", err)
           );
         } catch (e) {

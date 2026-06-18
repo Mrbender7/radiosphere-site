@@ -321,10 +321,8 @@ export function useCast() {
           if (!session) return;
 
           const chr = window.chrome;
-          const contentType = detectCastContentType(station);
           // Send stream URL as-is (no HTTPS forcing — was breaking HTTP-only streams)
-          const mediaInfo = new chr.cast.media.MediaInfo(station.streamUrl, contentType);
-          mediaInfo.streamType = chr.cast.media.StreamType.LIVE;
+          const mediaInfo = new chr.cast.media.MediaInfo(station.streamUrl, "audio/*");
           mediaInfo.metadata = new chr.cast.media.MusicTrackMediaMetadata();
           mediaInfo.metadata.title = station.name;
           mediaInfo.metadata.artist = "RadioSphere.be";

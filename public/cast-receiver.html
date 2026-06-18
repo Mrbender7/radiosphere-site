@@ -479,13 +479,39 @@
       }
     );
 
+    // Detect proper MIME / stream type from URL (sender sends "audio/*" which is invalid)
+    function detectStreamType(url) {
+      const u = (url || '').toLowerCase().split('?')[0];
+      if (u.endsWith('.m3u8'))  return { contentType: 'application/vnd.apple.mpegurl', hls: true };
+      if (u.endsWith('.mpd'))   return { contentType: 'application/dash+xml',         hls: false };
+      if (u.endsWith('.aac'))   return { contentType: 'audio/aac',                    hls: false };
+      if (u.endsWith('.m4a'))   return { contentType: 'audio/mp4',                    hls: false };
+      if (u.endsWith('.ogg') || u.endsWith('.oga') || u.endsWith('.opus'))
+                                return { contentType: 'audio/ogg',                    hls: false };
+      if (u.endsWith('.flac'))  return { contentType: 'audio/flac',                   hls: false };
+      if (u.endsWith('.wav'))   return { contentType: 'audio/wav',                    hls: false };
+      // Most Shoutcast/Icecast streams are MP3 without an extension
+      return { contentType: 'audio/mpeg', hls: false };
+    }
+
     playerManager.setMessageInterceptor(
       cast.framework.messages.MessageType.LOAD,
       request => {
         const media = request.media;
         if (media) {
           // v2.5.4: Stream URL is sent as-is (resolved by sender, no HTTPS forcing)
-          console.log('[RS Receiver] Loading stream:', media.contentId);
+          console.log('[RS Receiver] Loading stream:', media.contentId, 'orig contentType:', media.contentType);
+
+          // v2.5.5: Force a real MIME — "audio/*" prevents playback on CAF receivers
+          const det = detectStreamType(media.contentId);
+          if (!media.contentType || media.contentType === 'audio/*' || media.contentType.endsWith('/*')) {
+            media.contentType = det.contentType;
+          }
+          media.streamType = cast.framework.messages.StreamType.LIVE;
+          if (det.hls) {
+            media.hlsSegmentFormat = cast.framework.messages.HlsSegmentFormat.AAC;
+          }
+          console.log('[RS Receiver] Resolved contentType:', media.contentType);
 
           const title = media.metadata?.title || 'Station';
           const imageUrl = media.metadata?.images?.[0]?.url || '';

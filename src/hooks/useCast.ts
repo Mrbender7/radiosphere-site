@@ -339,7 +339,7 @@ export function useCast() {
 
           const request = new chr.cast.media.LoadRequest(mediaInfo);
           session.loadMedia(request).then(
-            () => console.log("[RadioSphere][Cast] Media loaded", { contentType, url: station.streamUrl }),
+            () => console.log("[RadioSphere][Cast] Media loaded"),
             (err: any) => console.warn("[RadioSphere][Cast] Load error:", err)
           );
         } catch (e) {

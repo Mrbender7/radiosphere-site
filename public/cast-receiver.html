@@ -193,12 +193,15 @@
        Keep it mounted but visually hidden so RadioSphere keeps its custom TV UI. */
     cast-media-player {
       position: fixed;
-      inset: 0;
-      width: 100vw;
-      height: 100vh;
-      opacity: 0;
+      left: 0;
+      bottom: 0;
+      width: 1px;
+      height: 1px;
+      opacity: 0.01;
       pointer-events: none;
       z-index: 0;
+      --background-color: transparent;
+      --splash-image: none;
     }
 
     /* Debug overlay (visible on TV — photograph it to read) */
@@ -597,77 +600,76 @@
 
     playerManager.setMessageInterceptor(
       cast.framework.messages.MessageType.LOAD,
-      request => {
-        const media = request.media;
-        if (media) {
-          const streamUrl = media.contentUrl || media.contentId || media.entity || '';
-          const url = streamUrl.toLowerCase();
-          let ct = (media.contentType || '').toLowerCase();
+      request => new Promise((resolve) => {
+        try {
+          const media = request.media;
+          if (media) {
+            const streamUrl = media.contentUrl || media.contentId || media.entity || '';
+            const url = streamUrl.toLowerCase();
+            let ct = (media.contentType || '').toLowerCase();
 
-          // CAF refuse les MIME wildcard ou vides (errorCode 905 LOAD_FAILED).
-          // On force un MIME concret en se basant sur l'extension.
-          if (!ct || ct === 'audio/*' || ct.endsWith('/*')) {
-            const u = url.split('?')[0];
-            let guessed = 'audio/mpeg';
-            if (u.endsWith('.aac')) guessed = 'audio/aac';
-            else if (u.endsWith('.m4a')) guessed = 'audio/mp4';
-            else if (u.endsWith('.ogg') || u.endsWith('.oga') || u.endsWith('.opus')) guessed = 'audio/ogg';
-            else if (u.endsWith('.flac')) guessed = 'audio/flac';
-            else if (u.endsWith('.wav')) guessed = 'audio/wav';
-            else if (u.endsWith('.m3u8')) guessed = 'application/x-mpegurl';
-            else if (u.endsWith('.mpd')) guessed = 'application/dash+xml';
-            media.contentType = guessed;
-            ct = guessed;
-            tvLog('ok', 'MIME forcé →', guessed);
-          }
-
-          // Radio streams are continuous; keep/force LIVE instead of BUFFERED.
-          // BUFFERED can make Chromecast wait for a finite file and show the UI
-          // metadata without ever starting audible playback on Icecast/Shoutcast.
-          media.streamType = cast.framework.messages.StreamType.LIVE;
-          media.contentUrl = streamUrl;
-          media.contentId = streamUrl;
-          if (media.duration == null) {
-            media.duration = -1;
-          }
-
-          setReceiverStatus('Chargement du flux');
-          console.log('[RS Receiver] Loading stream:', streamUrl,
-                      'contentType:', media.contentType,
-                      'streamType:', media.streamType);
-          tvLog('ok', 'LOAD url', streamUrl);
-          tvLog('info', 'contentType', media.contentType || '(none)');
-          tvLog('info', 'streamType', media.streamType);
-          if (streamUrl.startsWith('http://')) tvLog('err', 'HTTP non-sécurisé (mixed content)');
-
-          try {
-            const title = media.metadata?.title || 'Station';
-            const imageUrl = media.metadata?.images?.[0]?.url || '';
-            const tags = normalizeTags(media.customData?.tags);
-
-            document.getElementById('stationName').textContent = title;
-            document.getElementById('miniName').textContent = title;
-
-            const tagsEl = document.getElementById('stationTags');
-            tagsEl.textContent = tags.length > 0 ? tags.slice(0, 4).join(' • ') : '';
-
-            const iconImg = document.getElementById('miniIconImg');
-            if (imageUrl) {
-              iconImg.src = imageUrl.replace('http://', 'https://');
-              iconImg.style.display = 'block';
-              iconImg.onerror = () => { iconImg.style.display = 'none'; };
-            } else {
-              iconImg.style.display = 'none';
+            // CAF refuse les MIME wildcard ou vides (errorCode 905 LOAD_FAILED).
+            if (!ct || ct === 'audio/*' || ct.endsWith('/*')) {
+              const u = url.split('?')[0];
+              let guessed = 'audio/mpeg';
+              if (u.endsWith('.aac')) guessed = 'audio/aac';
+              else if (u.endsWith('.m4a')) guessed = 'audio/mp4';
+              else if (u.endsWith('.ogg') || u.endsWith('.oga') || u.endsWith('.opus')) guessed = 'audio/ogg';
+              else if (u.endsWith('.flac')) guessed = 'audio/flac';
+              else if (u.endsWith('.wav')) guessed = 'audio/wav';
+              else if (u.endsWith('.m3u8')) guessed = 'application/x-mpegurl';
+              else if (u.endsWith('.mpd')) guessed = 'application/dash+xml';
+              media.contentType = guessed;
+              ct = guessed;
+              tvLog('ok', 'MIME forcé →', guessed);
             }
 
-            const genre = detectGenre(tags);
-            setGenreAnimation(genre);
-          } catch (uiError) {
-            console.warn('[RS Receiver] UI update failed; continuing media LOAD:', uiError);
+            media.streamType = cast.framework.messages.StreamType.LIVE;
+            media.contentUrl = streamUrl;
+            media.contentId = streamUrl;
+            if (media.duration == null) media.duration = -1;
+
+            // Force playback to start immediately after LOAD
+            if (request.autoplay !== false) request.autoplay = true;
+
+            setReceiverStatus('Chargement du flux');
+            tvLog('ok', 'LOAD url', streamUrl);
+            tvLog('info', 'contentType', media.contentType || '(none)');
+            tvLog('info', 'streamType', media.streamType);
+            if (streamUrl.startsWith('http://')) tvLog('err', 'HTTP non-sécurisé (mixed content)');
+
+            try {
+              const title = media.metadata?.title || 'Station';
+              const imageUrl = media.metadata?.images?.[0]?.url || '';
+              const tags = normalizeTags(media.customData?.tags);
+
+              document.getElementById('stationName').textContent = title;
+              document.getElementById('miniName').textContent = title;
+
+              const tagsEl = document.getElementById('stationTags');
+              tagsEl.textContent = tags.length > 0 ? tags.slice(0, 4).join(' • ') : '';
+
+              const iconImg = document.getElementById('miniIconImg');
+              if (imageUrl) {
+                iconImg.src = imageUrl.replace('http://', 'https://');
+                iconImg.style.display = 'block';
+                iconImg.onerror = () => { iconImg.style.display = 'none'; };
+              } else {
+                iconImg.style.display = 'none';
+              }
+
+              const genre = detectGenre(tags);
+              setGenreAnimation(genre);
+            } catch (uiError) {
+              console.warn('[RS Receiver] UI update failed; continuing media LOAD:', uiError);
+              tvLog('err', 'UI update failed', String(uiError));
+            }
           }
+        } catch (err) {
+          tvLog('err', 'LOAD interceptor error', String(err));
         }
-        return request;
-      }
+        resolve(request);
+      })
     );
 
     // Start receiver with PlaybackConfig optimized for live audio streams.

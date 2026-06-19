@@ -513,6 +513,34 @@
       return [];
     }
 
+    // ─── TV Debug overlay logger ────────────────────────────────────────
+    const debugEnabled = !/[?&]debug=0/.test(location.search);
+    const debugLogEl = document.getElementById('debugLog');
+    const debugOverlay = document.getElementById('debugOverlay');
+    if (!debugEnabled && debugOverlay) debugOverlay.style.display = 'none';
+    const debugLines = [];
+    function tvLog(kind, label, data) {
+      if (!debugEnabled) return;
+      const ts = new Date().toISOString().slice(11,19);
+      let line = `[${ts}] `;
+      if (kind === 'err') line = `<span class="err">[${ts}] ✗ ${label}</span>`;
+      else if (kind === 'ok') line = `<span class="ok">[${ts}] ✓ ${label}</span>`;
+      else line = `[${ts}] <span class="k">${label}</span>`;
+      if (data !== undefined) {
+        let s;
+        try { s = typeof data === 'string' ? data : JSON.stringify(data); }
+        catch { s = String(data); }
+        if (s && s.length > 280) s = s.slice(0,280) + '…';
+        if (s) line += ' ' + s;
+      }
+      debugLines.push(line);
+      if (debugLines.length > 40) debugLines.shift();
+      if (debugLogEl) debugLogEl.innerHTML = debugLines.join('<br>');
+    }
+    window.addEventListener('error', e => tvLog('err', 'JS error', e.message));
+    window.addEventListener('unhandledrejection', e => tvLog('err', 'Promise rejection', String(e.reason)));
+    tvLog('ok', 'Receiver loaded');
+
     // ─── Cast Receiver Setup ───────────────────────────────────────────
     const context = cast.framework.CastReceiverContext.getInstance();
     const playerManager = context.getPlayerManager();
@@ -534,15 +562,22 @@
       (event) => {
         console.error('[RS Receiver] Playback error:', JSON.stringify(event));
         setReceiverStatus('Erreur de lecture');
+        tvLog('err', `ERROR ${event?.detailedErrorCode || ''} / ${event?.error?.code || ''}`,
+          { type: event?.type, reason: event?.reason, detailed: event?.detailedErrorCode, err: event?.error });
       }
     );
 
-    addReceiverEvent('BUFFERING', () => setReceiverStatus('Chargement du flux'));
-    addReceiverEvent('PLAYING', () => setReceiverStatus('En lecture'));
-    addReceiverEvent('PLAYER_LOAD_COMPLETE', () => setReceiverStatus('Flux chargé'));
+    addReceiverEvent('BUFFERING', (e) => { setReceiverStatus('Chargement du flux'); tvLog('info', 'BUFFERING', e?.isBuffering); });
+    addReceiverEvent('PLAYING', () => { setReceiverStatus('En lecture'); tvLog('ok', 'PLAYING'); });
+    addReceiverEvent('PAUSE', () => tvLog('info', 'PAUSE'));
+    addReceiverEvent('PLAYER_LOAD_COMPLETE', () => { setReceiverStatus('Flux chargé'); tvLog('ok', 'PLAYER_LOAD_COMPLETE'); });
+    addReceiverEvent('PLAYER_LOADING', () => tvLog('info', 'PLAYER_LOADING'));
     addReceiverEvent('MEDIA_STATUS', event => {
       const state = event?.mediaStatus?.playerState;
-      if (state) console.log('[RS Receiver] Media status:', state, JSON.stringify(event.mediaStatus));
+      if (state) {
+        console.log('[RS Receiver] Media status:', state, JSON.stringify(event.mediaStatus));
+        tvLog('info', 'MEDIA_STATUS', state);
+      }
     });
 
     playerManager.setMessageInterceptor(

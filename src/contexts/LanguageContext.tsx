@@ -9,7 +9,7 @@ interface LanguageContextType {
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
-const SUPPORTED_LANGUAGES: Language[] = ["fr", "en", "es", "de", "ja", "it", "nl", "sv", "pt-BR", "pt", "pl", "zh", "tr", "ru", "uk", "id", "ms", "th", "ar", "hi"];
+const SUPPORTED_LANGUAGES: Language[] = ["fr", "en", "es", "de", "ja", "it", "nl", "sv", "pt-BR", "pt", "pl", "zh-TW", "zh", "tr", "ru", "uk", "id", "ms", "th", "ar", "hi"];
 
 const RTL_LANGUAGES: Language[] = ["ar"];
 

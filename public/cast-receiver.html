@@ -494,15 +494,28 @@
       request => {
         const media = request.media;
         if (media) {
-          // v2.5.4: Stream URL is sent as-is (resolved by sender, no HTTPS forcing)
-          console.log('[RS Receiver] Loading stream:', media.contentId, 'contentType:', media.contentType);
+          const url = (media.contentId || '').toLowerCase();
+          const ct = (media.contentType || '').toLowerCase();
+          const isHls = ct.includes('mpegurl') || url.includes('.m3u8');
+          const isDash = ct.includes('dash') || url.includes('.mpd');
+
+          // FIX: Icecast/Shoutcast (MP3/AAC) streams must use BUFFERED, not LIVE.
+          // The native sender forces STREAM_TYPE_LIVE which makes CAF stall on
+          // raw audio streams (UI loads but no audio). Override here for non-
+          // HLS/DASH streams so playback actually starts.
+          if (!isHls && !isDash) {
+            media.streamType = cast.framework.messages.StreamType.BUFFERED;
+          }
+
+          console.log('[RS Receiver] Loading stream:', media.contentId,
+                      'contentType:', media.contentType,
+                      'streamType:', media.streamType);
 
           try {
             const title = media.metadata?.title || 'Station';
             const imageUrl = media.metadata?.images?.[0]?.url || '';
             const tags = normalizeTags(media.customData?.tags);
 
-            // Update UI only; never modify or block the media LOAD request.
             document.getElementById('stationName').textContent = title;
             document.getElementById('miniName').textContent = title;
 

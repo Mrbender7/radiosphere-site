@@ -188,9 +188,45 @@
 
     /* Hidden state */
     .hidden { display: none !important; }
+
+    /* Debug overlay (visible on TV — photograph it to read) */
+    #debugOverlay {
+      position: fixed;
+      top: 12px;
+      right: 12px;
+      width: 46%;
+      max-height: 92vh;
+      overflow: hidden;
+      background: rgba(0,0,0,0.82);
+      border: 2px solid hsl(120,90%,55%);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-family: 'Courier New', monospace;
+      font-size: 15px;
+      line-height: 1.35;
+      color: hsl(120,90%,75%);
+      z-index: 9999;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+    #debugOverlay h2 {
+      font-size: 16px;
+      color: hsl(50,100%,60%);
+      margin-bottom: 6px;
+      font-family: 'Courier New', monospace;
+    }
+    #debugOverlay .err { color: hsl(0,100%,70%); font-weight: bold; }
+    #debugOverlay .ok  { color: hsl(120,90%,65%); }
+    #debugOverlay .k   { color: hsl(200,90%,70%); }
   </style>
 </head>
 <body>
+
+  <!-- Debug overlay — visible on TV to diagnose playback (disable with ?debug=0) -->
+  <div id="debugOverlay">
+    <h2>RS DEBUG v1</h2>
+    <div id="debugLog">waiting for cast…</div>
+  </div>
 
   <!-- Mascot -->
   <img class="mascot" src="lite-hiro.png" alt="" aria-hidden="true" />

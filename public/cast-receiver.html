@@ -189,6 +189,18 @@
     /* Hidden state */
     .hidden { display: none !important; }
 
+    /* CAF requires a cast-media-player element to own the real media pipeline.
+       Keep it mounted but visually hidden so RadioSphere keeps its custom TV UI. */
+    cast-media-player {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
     /* Debug overlay (visible on TV — photograph it to read) */
     #debugOverlay {
       position: fixed;
@@ -221,6 +233,9 @@
   </style>
 </head>
 <body>
+
+  <!-- Required by the Cast Application Framework for media playback. -->
+  <cast-media-player></cast-media-player>
 
   <!-- Debug overlay — visible on TV to diagnose playback (disable with ?debug=0) -->
   <div id="debugOverlay">
@@ -610,6 +625,8 @@
           // BUFFERED can make Chromecast wait for a finite file and show the UI
           // metadata without ever starting audible playback on Icecast/Shoutcast.
           media.streamType = cast.framework.messages.StreamType.LIVE;
+          media.contentUrl = streamUrl;
+          media.contentId = streamUrl;
           if (media.duration == null) {
             media.duration = -1;
           }
@@ -653,8 +670,11 @@
       }
     );
 
-    // Keep CAF defaults for stream handling, like the old working receiver.
-    context.start();
+    // Start receiver with PlaybackConfig optimized for live audio streams.
+    const playbackConfig = new cast.framework.PlaybackConfig();
+    playbackConfig.autoResumeDuration = 5;
+    playbackConfig.initialBandwidth = 128000;
+    context.start({ playbackConfig });
   </script>
 </body>
 </html>

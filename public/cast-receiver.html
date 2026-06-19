@@ -193,12 +193,15 @@
        Keep it mounted but visually hidden so RadioSphere keeps its custom TV UI. */
     cast-media-player {
       position: fixed;
-      inset: 0;
-      width: 100vw;
-      height: 100vh;
-      opacity: 0;
+      left: 0;
+      bottom: 0;
+      width: 1px;
+      height: 1px;
+      opacity: 0.01;
       pointer-events: none;
       z-index: 0;
+      --background-color: transparent;
+      --splash-image: none;
     }
 
     /* Debug overlay (visible on TV — photograph it to read) */

@@ -322,7 +322,21 @@ export function useCast() {
 
           const chr = window.chrome;
           // Send stream URL as-is (no HTTPS forcing — was breaking HTTP-only streams)
-          const mediaInfo = new chr.cast.media.MediaInfo(station.streamUrl, "audio/*");
+          // CAF rejects "audio/*" with errorCode 905 (LOAD_FAILED). Use a concrete MIME.
+          const guessMime = (url: string): string => {
+            const u = url.split("?")[0].toLowerCase();
+            if (u.endsWith(".mp3")) return "audio/mpeg";
+            if (u.endsWith(".aac")) return "audio/aac";
+            if (u.endsWith(".m4a")) return "audio/mp4";
+            if (u.endsWith(".ogg") || u.endsWith(".oga")) return "audio/ogg";
+            if (u.endsWith(".opus")) return "audio/ogg";
+            if (u.endsWith(".flac")) return "audio/flac";
+            if (u.endsWith(".wav")) return "audio/wav";
+            if (u.endsWith(".m3u8")) return "application/x-mpegurl";
+            if (u.endsWith(".mpd")) return "application/dash+xml";
+            return "audio/mpeg"; // safest default for Icecast/Shoutcast
+          };
+          const mediaInfo = new chr.cast.media.MediaInfo(station.streamUrl, guessMime(station.streamUrl));
           mediaInfo.metadata = new chr.cast.media.MusicTrackMediaMetadata();
           mediaInfo.metadata.title = station.name;
           mediaInfo.metadata.artist = "RadioSphere.be";

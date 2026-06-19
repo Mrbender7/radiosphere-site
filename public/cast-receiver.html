@@ -601,6 +601,10 @@
           console.log('[RS Receiver] Loading stream:', streamUrl,
                       'contentType:', media.contentType,
                       'streamType:', media.streamType);
+          tvLog('ok', 'LOAD url', streamUrl);
+          tvLog('info', 'contentType', media.contentType || '(none)');
+          tvLog('info', 'streamType', media.streamType);
+          if (streamUrl.startsWith('http://')) tvLog('err', 'HTTP non-sécurisé (mixed content)');
 
           try {
             const title = media.metadata?.title || 'Station';

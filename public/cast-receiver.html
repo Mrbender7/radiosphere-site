@@ -587,7 +587,24 @@
         if (media) {
           const streamUrl = media.contentUrl || media.contentId || media.entity || '';
           const url = streamUrl.toLowerCase();
-          const ct = (media.contentType || '').toLowerCase();
+          let ct = (media.contentType || '').toLowerCase();
+
+          // CAF refuse les MIME wildcard ou vides (errorCode 905 LOAD_FAILED).
+          // On force un MIME concret en se basant sur l'extension.
+          if (!ct || ct === 'audio/*' || ct.endsWith('/*')) {
+            const u = url.split('?')[0];
+            let guessed = 'audio/mpeg';
+            if (u.endsWith('.aac')) guessed = 'audio/aac';
+            else if (u.endsWith('.m4a')) guessed = 'audio/mp4';
+            else if (u.endsWith('.ogg') || u.endsWith('.oga') || u.endsWith('.opus')) guessed = 'audio/ogg';
+            else if (u.endsWith('.flac')) guessed = 'audio/flac';
+            else if (u.endsWith('.wav')) guessed = 'audio/wav';
+            else if (u.endsWith('.m3u8')) guessed = 'application/x-mpegurl';
+            else if (u.endsWith('.mpd')) guessed = 'application/dash+xml';
+            media.contentType = guessed;
+            ct = guessed;
+            tvLog('ok', 'MIME forcé →', guessed);
+          }
 
           // Radio streams are continuous; keep/force LIVE instead of BUFFERED.
           // BUFFERED can make Chromecast wait for a finite file and show the UI

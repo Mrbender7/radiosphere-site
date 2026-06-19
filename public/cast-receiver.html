@@ -272,7 +272,7 @@
     </div>
     <div class="mini-player-info">
       <div class="mini-player-name" id="miniName">--</div>
-      <div class="mini-player-status">En lecture</div>
+      <div class="mini-player-status" id="receiverStatus">En attente</div>
     </div>
     <div class="equalizer">
       <div class="eq-bar" style="height:20px"></div>
@@ -480,34 +480,54 @@
     // ─── Cast Receiver Setup ───────────────────────────────────────────
     const context = cast.framework.CastReceiverContext.getInstance();
     const playerManager = context.getPlayerManager();
+    const statusEl = document.getElementById('receiverStatus');
+
+    function setReceiverStatus(status) {
+      if (statusEl) statusEl.textContent = status;
+      console.log('[RS Receiver] Status:', status);
+    }
+
+    function addReceiverEvent(eventName, handler) {
+      const eventType = cast.framework.events.EventType[eventName];
+      if (eventType) playerManager.addEventListener(eventType, handler);
+    }
 
     // Error listener for diagnostics
     playerManager.addEventListener(
       cast.framework.events.EventType.ERROR,
       (event) => {
         console.error('[RS Receiver] Playback error:', JSON.stringify(event));
+        setReceiverStatus('Erreur de lecture');
       }
     );
+
+    addReceiverEvent('BUFFERING', () => setReceiverStatus('Chargement du flux'));
+    addReceiverEvent('PLAYING', () => setReceiverStatus('En lecture'));
+    addReceiverEvent('PLAYER_LOAD_COMPLETE', () => setReceiverStatus('Flux chargé'));
+    addReceiverEvent('MEDIA_STATUS', event => {
+      const state = event?.mediaStatus?.playerState;
+      if (state) console.log('[RS Receiver] Media status:', state, JSON.stringify(event.mediaStatus));
+    });
 
     playerManager.setMessageInterceptor(
       cast.framework.messages.MessageType.LOAD,
       request => {
         const media = request.media;
         if (media) {
-          const url = (media.contentId || '').toLowerCase();
+          const streamUrl = media.contentUrl || media.contentId || media.entity || '';
+          const url = streamUrl.toLowerCase();
           const ct = (media.contentType || '').toLowerCase();
-          const isHls = ct.includes('mpegurl') || url.includes('.m3u8');
-          const isDash = ct.includes('dash') || url.includes('.mpd');
 
-          // FIX: Icecast/Shoutcast (MP3/AAC) streams must use BUFFERED, not LIVE.
-          // The native sender forces STREAM_TYPE_LIVE which makes CAF stall on
-          // raw audio streams (UI loads but no audio). Override here for non-
-          // HLS/DASH streams so playback actually starts.
-          if (!isHls && !isDash) {
-            media.streamType = cast.framework.messages.StreamType.BUFFERED;
+          // Radio streams are continuous; keep/force LIVE instead of BUFFERED.
+          // BUFFERED can make Chromecast wait for a finite file and show the UI
+          // metadata without ever starting audible playback on Icecast/Shoutcast.
+          media.streamType = cast.framework.messages.StreamType.LIVE;
+          if (media.duration == null) {
+            media.duration = -1;
           }
 
-          console.log('[RS Receiver] Loading stream:', media.contentId,
+          setReceiverStatus('Chargement du flux');
+          console.log('[RS Receiver] Loading stream:', streamUrl,
                       'contentType:', media.contentType,
                       'streamType:', media.streamType);
 

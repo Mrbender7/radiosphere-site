@@ -3,7 +3,7 @@ import { RadioStation } from "@/types/radio";
 import { isInAppBrowser } from "@/utils/inAppBrowser";
 import { isNative as isCapacitorNativeEnv, loadCapacitorPlugin } from "@/utils/nativeBridge";
 
-const CAST_APP_ID = "CC1AD845";
+const CAST_APP_ID = "65257ADB";
 
 declare global {
   interface Window {

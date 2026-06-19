@@ -532,7 +532,8 @@
     }
 
     // ─── TV Debug overlay logger ────────────────────────────────────────
-    const debugEnabled = !/[?&]debug=0/.test(location.search);
+    // Debug overlay is opt-in: append ?debug=1 to the receiver URL to enable it.
+    const debugEnabled = /[?&]debug=1/.test(location.search);
     const debugLogEl = document.getElementById('debugLog');
     const debugOverlay = document.getElementById('debugOverlay');
     if (!debugEnabled && debugOverlay) debugOverlay.style.display = 'none';

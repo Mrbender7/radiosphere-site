@@ -3,7 +3,7 @@ import { useTranslation } from "@/contexts/LanguageContext";
 import { useSleepTimer, SLEEP_TIMER_OPTIONS } from "@/contexts/SleepTimerContext";
 import { useFavoritesContext } from "@/contexts/FavoritesContext";
 import { cn } from "@/lib/utils";
-import { Settings as SettingsIcon, Moon, ChevronDown, TimerOff, Heart, Download, Upload, RefreshCw, Wifi, Trash2, Zap } from "lucide-react";
+import { Settings as SettingsIcon, Moon, ChevronDown, TimerOff, Heart, Download, Upload, RefreshCw, Wifi, Trash2 } from "lucide-react";
 import { LANGUAGE_OPTIONS } from "@/i18n/translations";
 import {
   Select,

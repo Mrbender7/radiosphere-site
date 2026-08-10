@@ -100,11 +100,11 @@ export const radioBrowserProvider: RadioProvider = {
 
     try {
       const data = await fetchWithMirrors("stations/search", query, params.signal);
-      return data.map(normalizeStation);
+      return filterStationList(data.map(normalizeStation));
     } catch (e) {
       if (e instanceof DOMException && e.name === "AbortError") throw e;
       console.warn("[RadioService] API failed for searchStations, trying fallback...");
-      return fallbackSearchStations({
+      return filterStationList(await fallbackSearchStations({
         name: params.name,
         country: params.country,
         tag: params.tag,
@@ -114,37 +114,38 @@ export const radioBrowserProvider: RadioProvider = {
         offset: params.offset,
         order: params.order,
         reverse: params.reverse,
-      });
+      }));
     }
   },
 
   async getTopStations(limit = 20): Promise<RadioStation[]> {
     try {
       const data = await fetchWithMirrors("stations/topvote", { limit: String(limit), hidebroken: "true" });
-      return data.map(normalizeStation);
+      return filterStationList(data.map(normalizeStation));
     } catch {
       console.warn("[RadioService] API failed for getTopStations, trying fallback...");
-      return fallbackGetTopStations(limit);
+      return filterStationList(await fallbackGetTopStations(limit));
     }
   },
 
   async getStationsByTag(tag: string, limit = 20): Promise<RadioStation[]> {
     try {
       const data = await fetchWithMirrors("stations/bytag/" + encodeURIComponent(tag), { limit: String(limit), order: "votes", reverse: "true", hidebroken: "true" });
-      return data.map(normalizeStation);
+      return filterStationList(data.map(normalizeStation));
     } catch {
       console.warn("[RadioService] API failed for getStationsByTag, trying fallback...");
-      return fallbackGetStationsByTag(tag, limit);
+      return filterStationList(await fallbackGetStationsByTag(tag, limit));
     }
   },
 
   async getStationsByCountry(country: string, limit = 20): Promise<RadioStation[]> {
     try {
       const data = await fetchWithMirrors("stations/bycountry/" + encodeURIComponent(country), { limit: String(limit), order: "votes", reverse: "true", hidebroken: "true" });
-      return data.map(normalizeStation);
+      return filterStationList(data.map(normalizeStation));
     } catch {
       console.warn("[RadioService] API failed for getStationsByCountry, trying fallback...");
-      return fallbackGetStationsByCountry(country, limit);
+      return filterStationList(await fallbackGetStationsByCountry(country, limit));
     }
   },
 };
+

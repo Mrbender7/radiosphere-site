@@ -38,6 +38,7 @@ export function DesktopSidebar({ activeTab, onTabChange }: DesktopSidebarProps) 
   const { t, language, setLanguage } = useTranslation();
   const currentLangOption = LANGUAGE_OPTIONS.find(o => o.value === language) ?? LANGUAGE_OPTIONS[0];
   const [tbmModalOpen, setTbmModalOpen] = useState(false);
+  const [languagePopoverOpen, setLanguagePopoverOpen] = useState(false);
   // Defaults must match SSG output (false) to avoid React hydration mismatch
   // (#418/#423) which freezes the app. Restore from localStorage post-mount.
   const [collapsed, setCollapsed] = useState(false);
@@ -242,7 +243,7 @@ export function DesktopSidebar({ activeTab, onTabChange }: DesktopSidebarProps) 
         )}
 
         {/* Language switcher */}
-        <Popover>
+        <Popover open={languagePopoverOpen} onOpenChange={setLanguagePopoverOpen}>
           <PopoverTrigger asChild>
             {!collapsed ? (
               <button className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl bg-accent/40 hover:bg-accent/70 transition-colors text-left">
@@ -269,7 +270,10 @@ export function DesktopSidebar({ activeTab, onTabChange }: DesktopSidebarProps) 
               {LANGUAGE_OPTIONS.map((opt) => (
                 <button
                   key={opt.value}
-                  onClick={() => setLanguage(opt.value)}
+                  onClick={() => {
+                    setLanguage(opt.value);
+                    setLanguagePopoverOpen(false);
+                  }}
                   className={cn(
                     "w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-xs transition-colors",
                     language === opt.value

@@ -83,7 +83,7 @@ export function useRecentStations() {
   const [recHydrated, setRecHydrated] = useState(false);
 
   useEffect(() => {
-    setRecent(loadFromStorage(RECENT_KEY, []));
+    setRecent(pruneBlockedFavorites(loadFromStorage<RadioStation[]>(RECENT_KEY, [])));
     setRecHydrated(true);
   }, []);
 
@@ -93,11 +93,13 @@ export function useRecentStations() {
   }, [recent, recHydrated]);
 
   const addRecent = useCallback((station: RadioStation) => {
+    if (!isStationSafe(station)) return;
     setRecent(prev => {
       const filtered = prev.filter(s => s.id !== station.id);
       return [station, ...filtered].slice(0, 20);
     });
   }, []);
+
 
   return { recent, addRecent };
 }

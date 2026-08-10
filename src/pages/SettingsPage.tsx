@@ -3,7 +3,32 @@ import { useTranslation } from "@/contexts/LanguageContext";
 import { useSleepTimer, SLEEP_TIMER_OPTIONS } from "@/contexts/SleepTimerContext";
 import { useFavoritesContext } from "@/contexts/FavoritesContext";
 import { cn } from "@/lib/utils";
-import { Settings as SettingsIcon, Moon, ChevronDown, TimerOff, Heart, Download, Upload, RefreshCw, Wifi, Trash2 } from "lucide-react";
+import { Settings as SettingsIcon, Moon, ChevronDown, TimerOff, Heart, Download, Upload, RefreshCw, Wifi, Trash2, Lock } from "lucide-react";
+import type { Language } from "@/i18n/translations";
+
+const PREMIUM_SLEEP_TIMER_NOTICES: Record<Language, string> = {
+  fr: "La minuterie de sommeil est une fonction Premium de l'application Android.",
+  en: "The sleep timer is a Premium feature of the Android app.",
+  es: "El temporizador de sueño es una función Premium de la aplicación Android.",
+  de: "Der Schlaf-Timer ist eine Premium-Funktion der Android-App.",
+  ja: "スリープタイマーはAndroidアプリのプレミアム機能です。",
+  it: "Il timer di spegnimento è una funzione Premium dell'app Android.",
+  nl: "De slaaptimer is een Premium-functie van de Android-app.",
+  sv: "Sovtimern är en Premium-funktion i Android-appen.",
+  "pt-BR": "O temporizador de sono é um recurso Premium do aplicativo Android.",
+  pt: "O temporizador de sono é uma funcionalidade Premium da aplicação Android.",
+  pl: "Wyłącznik czasowy to funkcja Premium aplikacji na Androida.",
+  "zh-TW": "睡眠定時器是 Android 應用程式的 Premium 功能。",
+  zh: "睡眠定时器是 Android 应用的 Premium 功能。",
+  tr: "Uyku zamanlayıcısı Android uygulamasının Premium özelliğidir.",
+  ru: "Таймер сна — это функция Premium в приложении Android.",
+  uk: "Таймер сну — це функція Premium у застосунку Android.",
+  id: "Timer tidur adalah fitur Premium di aplikasi Android.",
+  ms: "Pemasa tidur ialah ciri Premium dalam aplikasi Android.",
+  th: "ตั้งเวลาปิดเครื่องเป็นฟีเจอร์ Premium ของแอป Android",
+  ar: "مؤقّت النوم ميزة Premium في تطبيق Android.",
+  hi: "स्लीप टाइमर Android ऐप का Premium फ़ीचर है।",
+};
 import { LANGUAGE_OPTIONS } from "@/i18n/translations";
 import {
   Select,
@@ -127,20 +152,29 @@ export function SettingsPage({ onReopenWelcome, onResetApp }: SettingsPageProps)
           <div>
             <p className="text-xs text-muted-foreground mb-3">{t("sleepTimer.desc")}</p>
             <div className="grid grid-cols-3 gap-2 mb-3">
-              {SLEEP_TIMER_OPTIONS.map(opt => (
-                <button
-                  key={opt.minutes}
-                  onClick={(e) => { e.stopPropagation(); startTimer(opt.minutes); }}
-                  className={cn(
-                    "py-2.5 rounded-lg text-xs font-semibold transition-all",
-                    "bg-secondary text-muted-foreground hover:bg-primary hover:text-primary-foreground"
-                  )}
-                >
-                  {t(`sleepTimer.${opt.minutes}`)}
-                </button>
-              ))}
+              {SLEEP_TIMER_OPTIONS.map(opt => {
+                const isPremiumLocked = opt.minutes !== 15;
+                return (
+                  <Button
+                    key={opt.minutes}
+                    type="button"
+                    onClick={(e) => { e.stopPropagation(); if (!isPremiumLocked) startTimer(opt.minutes); }}
+                    variant="ghost"
+                    disabled={isPremiumLocked}
+                    className={cn(
+                      "relative h-auto min-h-10 py-2.5 rounded-lg text-xs font-semibold",
+                      isPremiumLocked
+                        ? "cursor-not-allowed bg-secondary/60 text-muted-foreground/60 opacity-100"
+                        : "bg-secondary text-muted-foreground hover:bg-primary hover:text-primary-foreground"
+                    )}
+                  >
+                    {t(`sleepTimer.${opt.minutes}`)}
+                    {isPremiumLocked && <Lock aria-hidden="true" className="absolute right-1.5 top-1.5 h-3 w-3" />}
+                  </Button>
+                );
+              })}
             </div>
-            <div className="flex gap-2 mb-3">
+            <div className="relative flex gap-2 mb-3">
               <Input
                 type="number"
                 min="1"
@@ -149,24 +183,25 @@ export function SettingsPage({ onReopenWelcome, onResetApp }: SettingsPageProps)
                 value={customMinutes}
                 onChange={(e) => setCustomMinutes(e.target.value)}
                 onClick={(e) => e.stopPropagation()}
-                className="flex-1 h-9 text-xs bg-secondary border-border"
+                disabled
+                className="flex-1 h-9 text-xs bg-secondary border-border opacity-60"
               />
               <Button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  const mins = parseInt(customMinutes);
-                  if (mins > 0) {
-                    startTimer(mins);
-                    setCustomMinutes("");
-                  }
-                }}
+                type="button"
+                onClick={(e) => e.stopPropagation()}
+                variant="ghost"
                 size="sm"
-                className="h-9 px-4 text-xs font-semibold"
-                disabled={!customMinutes || parseInt(customMinutes) <= 0}
+                disabled
+                className="relative h-9 px-4 text-xs font-semibold bg-secondary/60 text-muted-foreground/60 opacity-100"
               >
                 {t("sleepTimer.customGo")}
+                <Lock aria-hidden="true" className="absolute right-1 top-1 h-3 w-3" />
               </Button>
             </div>
+            <p className="flex items-start gap-1.5 text-[11px] leading-relaxed text-muted-foreground">
+              <Lock aria-hidden="true" className="mt-0.5 h-3 w-3 shrink-0" />
+              <span>{PREMIUM_SLEEP_TIMER_NOTICES[language]}</span>
+            </p>
             {isActive && (
               <Button
                 onClick={(e) => { e.stopPropagation(); cancelTimer(); }}

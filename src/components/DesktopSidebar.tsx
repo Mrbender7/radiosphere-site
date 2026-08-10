@@ -38,6 +38,7 @@ export function DesktopSidebar({ activeTab, onTabChange }: DesktopSidebarProps) 
   const { t, language, setLanguage } = useTranslation();
   const currentLangOption = LANGUAGE_OPTIONS.find(o => o.value === language) ?? LANGUAGE_OPTIONS[0];
   const [tbmModalOpen, setTbmModalOpen] = useState(false);
+  const [languagePopoverOpen, setLanguagePopoverOpen] = useState(false);
   // Defaults must match SSG output (false) to avoid React hydration mismatch
   // (#418/#423) which freezes the app. Restore from localStorage post-mount.
   const [collapsed, setCollapsed] = useState(false);

@@ -25,10 +25,12 @@ export function useFavorites() {
 
   useEffect(() => {
     setFavorites(
-      loadFromStorage<RadioStation[]>(FAVORITES_KEY, []).sort((a, b) => a.name.localeCompare(b.name))
+      pruneBlockedFavorites(loadFromStorage<RadioStation[]>(FAVORITES_KEY, []))
+        .sort((a, b) => a.name.localeCompare(b.name))
     );
     setFavHydrated(true);
   }, []);
+
 
   useEffect(() => {
     if (!favHydrated) return;

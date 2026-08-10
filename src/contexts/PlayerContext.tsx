@@ -486,6 +486,14 @@ export function PlayerProvider({ children, onStationPlay }: { children: React.Re
         return;
       }
 
+      // Content firewall — never play a blocked station.
+      if (!isStationSafe(station)) {
+        console.warn('[RadioSphere] Playback blocked by content filter.');
+        toast({ title: t("player.error"), description: t("player.streamUnavailable"), variant: "destructive" });
+        return;
+      }
+
+
       // Detect mixed content (HTTP stream on HTTPS page)
       const isPageSecure = window.location.protocol === 'https:';
       const isStreamInsecure = station.streamUrl.startsWith('http://');

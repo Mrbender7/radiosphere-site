@@ -184,16 +184,18 @@ export function SettingsPage({ onReopenWelcome, onResetApp }: SettingsPageProps)
           <div className="space-y-2">
             <Button
               onClick={async () => {
-                if (favorites.length === 0) {
+                const exportable = filterStationList(favorites);
+                if (exportable.length === 0) {
                   toast({ title: t("favorites.noFavoritesToExport") });
                   return;
                 }
                 const header = "name,streamUrl,country,tags,homepage";
-                const rows = favorites.map(s =>
+                const rows = exportable.map(s =>
                   [s.name, s.streamUrl, s.country, s.tags.join(";"), s.homepage]
                     .map(v => `"${(v || "").replace(/"/g, '""')}"`)
                     .join(",")
                 );
+
                 const csv = [header, ...rows].join("\n");
                 if (isNative()) {
                   try {

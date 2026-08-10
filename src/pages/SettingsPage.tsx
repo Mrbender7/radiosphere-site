@@ -3,7 +3,7 @@ import { useTranslation } from "@/contexts/LanguageContext";
 import { useSleepTimer, SLEEP_TIMER_OPTIONS } from "@/contexts/SleepTimerContext";
 import { useFavoritesContext } from "@/contexts/FavoritesContext";
 import { cn } from "@/lib/utils";
-import { Settings as SettingsIcon, Moon, ChevronDown, TimerOff, Heart, Download, Upload, RefreshCw, Wifi, Trash2, Zap } from "lucide-react";
+import { Settings as SettingsIcon, Moon, ChevronDown, TimerOff, Heart, Download, Upload, RefreshCw, Wifi, Trash2 } from "lucide-react";
 import { LANGUAGE_OPTIONS } from "@/i18n/translations";
 import {
   Select,
@@ -362,17 +362,6 @@ export function SettingsPage({ onReopenWelcome, onResetApp }: SettingsPageProps)
         {/* User Guide */}
         <UserGuideModal onReopenWelcome={onReopenWelcome} />
 
-        {/* Lite version preview */}
-        <CollapsibleSection icon={Zap} title="Lite version (preview)">
-          <div className="space-y-2">
-            <p className="text-xs text-muted-foreground">
-              The Lite version is a tiny static page automatically served to visitors stuck inside Facebook / Instagram / TikTok in-app browsers. It plays 20 hand-picked English stations with zero React, zero hydration, zero risk of blank screens.
-            </p>
-            <p className="text-[10px] text-muted-foreground/80 leading-relaxed">
-              To come back, paste <code className="bg-secondary px-1 py-0.5 rounded">radiosphere.be/?full=1</code> in the address bar.
-            </p>
-          </div>
-        </CollapsibleSection>
 
         <div className="mt-auto pt-8">
           {/* Reset app */}

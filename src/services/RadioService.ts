@@ -31,21 +31,23 @@ function normalizeStation(raw: any): RadioStation {
 
 /** Search station by exact stream URL */
 export async function searchStationByUrl(streamUrl: string): Promise<RadioStation | null> {
+  const guard = (s: RadioStation | null) => (s && isStationSafe(s) ? s : null);
   try {
     const data = await fetchWithMirrors("stations/byurl", { url: streamUrl, limit: "1" });
-    if (data.length > 0) return normalizeStation(data[0]);
+    if (data.length > 0) return guard(normalizeStation(data[0]));
     const data2 = await fetchWithMirrors("stations/search", { url: streamUrl, limit: "1" });
-    if (data2.length > 0) return normalizeStation(data2[0]);
+    if (data2.length > 0) return guard(normalizeStation(data2[0]));
     return null;
   } catch {
     console.warn("[RadioService] API failed for searchStationByUrl, trying fallback...");
     try {
-      return await fallbackSearchStationByUrl(streamUrl);
+      return guard(await fallbackSearchStationByUrl(streamUrl));
     } catch {
       return null;
     }
   }
 }
+
 
 /** Notify Radio Browser that a station was clicked */
 export async function reportStationClick(stationuuid: string): Promise<void> {

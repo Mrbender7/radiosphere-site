@@ -368,15 +368,6 @@ export function SettingsPage({ onReopenWelcome, onResetApp }: SettingsPageProps)
             <p className="text-xs text-muted-foreground">
               The Lite version is a tiny static page automatically served to visitors stuck inside Facebook / Instagram / TikTok in-app browsers. It plays 20 hand-picked English stations with zero React, zero hydration, zero risk of blank screens.
             </p>
-            <Button
-              onClick={() => { window.location.href = "/lite.html"; }}
-              variant="outline"
-              size="sm"
-              className="w-full rounded-lg text-xs gap-1.5"
-            >
-              <Zap className="w-3.5 h-3.5" />
-              Open Lite version
-            </Button>
             <p className="text-[10px] text-muted-foreground/80 leading-relaxed">
               To come back, paste <code className="bg-secondary px-1 py-0.5 rounded">radiosphere.be/?full=1</code> in the address bar.
             </p>

@@ -5195,4 +5195,34 @@ translations.th["seo.description"] = "ฟังสถานีวิทยุฟ
 translations.sv["seo.title"] = "RadioSphere — Gratis radio utan reklam | TimeBack Machine";
 translations.sv["seo.description"] = "Lyssna på 50 000+ gratis radiostationer från hela världen. Unikt: TimeBack Machine låter dig spola tillbaka vilken station som helst upp till 30 minuter. Ingen reklam, inget konto.";
 
+// The Premium Android recording limit is two hours. Keep this key explicit for
+// every supported language, including languages seeded from another locale.
+const TBM_QUOTA_DESCRIPTIONS: Record<Language, string> = {
+  fr: "Sur le web, la TimeBack Machine est limitée : rembobinage jusqu'à 2 minutes en arrière et enregistrement jusqu'à 5 minutes maximum, avec un quota global de 10 min/jour sur mobile pour garantir la stabilité. La version premium disponible sur Google Play permet de remonter jusqu'à 5 minutes en arrière et d'enregistrer jusqu'à 2 heures, sans quota.",
+  en: "On the web, the TimeBack Machine is limited: rewind up to 2 minutes back and record up to 5 minutes max, with an overall 10 min/day quota on mobile to ensure stability. The premium version available on Google Play lets you rewind up to 5 minutes back and record up to 2 hours, with no quota.",
+  es: "En la web, la TimeBack Machine es limitada: rebobinado hasta 2 minutos atrás y grabación hasta 5 minutos máximo, con un cupo global de 10 min/día en móvil para garantizar la estabilidad. La versión premium disponible en Google Play permite rebobinar hasta 5 minutos atrás y grabar hasta 2 horas, sin cupo.",
+  de: "Im Web ist die TimeBack Machine eingeschränkt: Zurückspulen bis zu 2 Minuten und Aufnahme bis zu 5 Minuten max, mit einem Gesamtkontingent von 10 Min/Tag auf Mobilgeräten für Stabilität. Die Premium-Version auf Google Play erlaubt Zurückspulen bis zu 5 Minuten und Aufnahmen bis zu 2 Stunden, ohne Kontingent.",
+  ja: "Web版のTimeBack Machineには制限があります：巻き戻しは最大2分、録音は最大5分、モバイルでは安定性のため1日合計10分の上限があります。Google Playで配信中のプレミアム版なら、最大5分の巻き戻しと最大2時間の録音が制限なしで可能です。",
+  it: "Sul web, la TimeBack Machine è limitata: riavvolgimento fino a 2 minuti e registrazione fino a 5 minuti max, con una quota complessiva di 10 min/giorno su mobile per garantire la stabilità. La versione premium disponibile su Google Play permette di riavvolgere fino a 5 minuti e registrare fino a 2 ore, senza quota.",
+  nl: "Op het web is de TimeBack Machine beperkt: terugspoelen tot 2 minuten en opname tot maximaal 5 minuten, met een totaal quotum van 10 min/dag op mobiel voor stabiliteit. De premium-versie op Google Play laat je tot 5 minuten terugspoelen en tot 2 uur opnemen, zonder quotum.",
+  sv: "På webben är TimeBack Machine begränsad: spola tillbaka upp till 2 minuter och spela in i högst 5 minuter, med en total gräns på 10 minuter per dag på mobilen för stabilitet. Premiumversionen på Google Play låter dig spola tillbaka upp till 5 minuter och spela in upp till 2 timmar, utan begränsning.",
+  pt: "Na web, a TimeBack Machine é limitada: rebobinagem até 2 minutos e gravação até 5 minutos no máximo, com uma quota global de 10 min/dia em móvel para garantir a estabilidade. A versão premium disponível no Google Play permite rebobinar até 5 minutos e gravar até 2 horas, sem quota.",
+  "pt-BR": "Na web, a TimeBack Machine é limitada: retroceder até 2 minutos e gravar por no máximo 5 minutos, com uma cota total de 10 min/dia em dispositivos móveis para garantir a estabilidade. A versão Premium disponível no Google Play permite retroceder até 5 minutos e gravar por até 2 horas, sem cota.",
+  pl: "W przeglądarce TimeBack Machine jest ograniczona: przewijanie do 2 minut wstecz i nagrywanie do maks. 5 minut, z łącznym limitem 10 min/dzień na urządzeniach mobilnych dla stabilności. Wersja premium dostępna w Google Play pozwala przewijać do 5 minut wstecz i nagrywać do 2 godzin, bez limitu.",
+  zh: "在网页版中，TimeBack Machine 有所限制：最多回放 2 分钟，录制最长 5 分钟，移动端每天总配额为 10 分钟以确保稳定性。Google Play 上提供的高级版可回放最多 5 分钟，录制最长 2 小时，无配额限制。",
+  "zh-TW": "在網頁版中，TimeBack Machine 有所限制：最多回放 2 分鐘，錄製最長 5 分鐘，行動裝置每天總配額為 10 分鐘以確保穩定性。Google Play 上提供的高階版可回放最多 5 分鐘，錄製最長 2 小時，無配額限制。",
+  tr: "Web'de TimeBack Machine sınırlıdır: 2 dakikaya kadar geri sarma ve en fazla 5 dakika kayıt, mobilde kararlılık için günlük toplam 10 dk kotası. Google Play'de bulunan premium sürüm, kotasız olarak 5 dakikaya kadar geri sarma ve 2 saate kadar kayıt imkânı sunar.",
+  ru: "В веб-версии TimeBack Machine имеет ограничения: перемотка назад до 2 минут и запись до 5 минут максимум, общая квота 10 мин/день на мобильных устройствах для стабильности. Премиум-версия в Google Play позволяет перематывать до 5 минут назад и записывать до 2 часов без квоты.",
+  uk: "У вебі TimeBack Machine обмежений: перемотування до 2 хвилин назад і запис до 5 хвилин максимум, із загальним лімітом 10 хв/день на мобільному задля стабільності. Преміум-версія у Google Play дозволяє перемотувати до 5 хвилин і записувати до 2 годин без квот.",
+  id: "Di web, TimeBack Machine terbatas: putar mundur hingga 2 menit dan rekam hingga maks. 5 menit, dengan kuota total 10 mnt/hari di seluler untuk menjaga kestabilan. Versi premium di Google Play memungkinkan putar mundur hingga 5 menit dan rekam hingga 2 jam, tanpa kuota.",
+  ms: "Di web, TimeBack Machine terhad: undur sehingga 2 minit dan rakam sehingga maksimum 5 minit, dengan kuota keseluruhan 10 minit/hari pada mudah alih untuk memastikan kestabilan. Versi premium di Google Play membolehkan anda mengundur sehingga 5 minit dan merakam sehingga 2 jam, tanpa kuota.",
+  th: "บนเว็บ TimeBack Machine มีข้อจำกัด: ย้อนกลับได้สูงสุด 2 นาทีและบันทึกได้นานสูงสุด 5 นาที โดยมีโควต้ารวม 10 นาทีต่อวันบนอุปกรณ์เคลื่อนที่เพื่อความเสถียร เวอร์ชันพรีเมียมบน Google Play ช่วยให้ย้อนกลับได้สูงสุด 5 นาทีและบันทึกได้นานสูงสุด 2 ชั่วโมงโดยไม่มีโควต้า",
+  ar: "على الويب، آلة الزمن محدودة: الإرجاع حتى دقيقتين والتسجيل حتى 5 دقائق كحد أقصى، مع حصة إجمالية تبلغ 10 دقائق/يوم على الجوال لضمان الاستقرار. النسخة المميزة المتوفرة على Google Play تتيح الإرجاع حتى 5 دقائق والتسجيل حتى ساعتين، دون أي حصة.",
+  hi: "वेब पर TimeBack Machine सीमित है: 2 मिनट तक पीछे जाने और अधिकतम 5 मिनट तक रिकॉर्ड करने की सुविधा, स्थिरता के लिए मोबाइल पर प्रतिदिन कुल 10 मिनट की सीमा के साथ। Google Play पर उपलब्ध Premium संस्करण 5 मिनट तक पीछे जाने और 2 घंटे तक रिकॉर्ड करने की सुविधा बिना किसी सीमा के देता है।",
+};
+
+Object.entries(TBM_QUOTA_DESCRIPTIONS).forEach(([language, description]) => {
+  translations[language as Language]["tbmQuota.description"] = description;
+});
+
 export default translations as unknown as Record<Language, Record<string, string>>;

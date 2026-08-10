@@ -38,12 +38,14 @@ export function useFavorites() {
   }, [favorites, favHydrated]);
 
   const toggleFavorite = useCallback((station: RadioStation) => {
+    if (!isStationSafe(station)) return;
     setFavorites(prev => {
       const exists = prev.some(s => s.id === station.id);
       const next = exists ? prev.filter(s => s.id !== station.id) : [...prev, station];
       return next.sort((a, b) => a.name.localeCompare(b.name));
     });
   }, []);
+
 
   const isFavorite = useCallback((id: string) => favorites.some(s => s.id === id), [favorites]);
 

@@ -1,6 +1,8 @@
 import { useState, useCallback, useEffect } from "react";
 import { RadioStation } from "@/types/radio";
 import { safeGetItem, safeSetItem } from "@/utils/safeStorage";
+import { pruneBlockedFavorites, isStationSafe } from "@/services/contentFilter";
+
 
 const FAVORITES_KEY = "radioflow_favorites";
 const RECENT_KEY = "radioflow_recent";
@@ -23,10 +25,12 @@ export function useFavorites() {
 
   useEffect(() => {
     setFavorites(
-      loadFromStorage<RadioStation[]>(FAVORITES_KEY, []).sort((a, b) => a.name.localeCompare(b.name))
+      pruneBlockedFavorites(loadFromStorage<RadioStation[]>(FAVORITES_KEY, []))
+        .sort((a, b) => a.name.localeCompare(b.name))
     );
     setFavHydrated(true);
   }, []);
+
 
   useEffect(() => {
     if (!favHydrated) return;
@@ -34,6 +38,7 @@ export function useFavorites() {
   }, [favorites, favHydrated]);
 
   const toggleFavorite = useCallback((station: RadioStation) => {
+    if (!isStationSafe(station)) return;
     setFavorites(prev => {
       const exists = prev.some(s => s.id === station.id);
       const next = exists ? prev.filter(s => s.id !== station.id) : [...prev, station];
@@ -41,12 +46,15 @@ export function useFavorites() {
     });
   }, []);
 
+
   const isFavorite = useCallback((id: string) => favorites.some(s => s.id === id), [favorites]);
 
 
-  const importFavorites = useCallback((stations: RadioStation[]) => {
+  const importFavorites = useCallback((incoming: RadioStation[]) => {
+    const stations = pruneBlockedFavorites(incoming);
     let addedCount = 0;
     setFavorites(prev => {
+
       const existingUrls = new Map(prev.map(s => [s.streamUrl, s]));
       const newStations: RadioStation[] = [];
       for (const s of stations) {
@@ -75,7 +83,7 @@ export function useRecentStations() {
   const [recHydrated, setRecHydrated] = useState(false);
 
   useEffect(() => {
-    setRecent(loadFromStorage(RECENT_KEY, []));
+    setRecent(pruneBlockedFavorites(loadFromStorage<RadioStation[]>(RECENT_KEY, [])));
     setRecHydrated(true);
   }, []);
 
@@ -85,11 +93,13 @@ export function useRecentStations() {
   }, [recent, recHydrated]);
 
   const addRecent = useCallback((station: RadioStation) => {
+    if (!isStationSafe(station)) return;
     setRecent(prev => {
       const filtered = prev.filter(s => s.id !== station.id);
       return [station, ...filtered].slice(0, 20);
     });
   }, []);
+
 
   return { recent, addRecent };
 }

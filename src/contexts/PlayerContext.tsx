@@ -2,6 +2,8 @@ import React, { createContext, useContext, useState, useRef, useCallback, useEff
 import { RadioStation } from "@/types/radio";
 import { toast } from "@/hooks/use-toast";
 import { reportStationClick } from "@/services/RadioService";
+import { isStationSafe } from "@/services/contentFilter";
+
 import { useTranslation } from "@/contexts/LanguageContext";
 import { useCast } from "@/hooks/useCast";
 import { SSLWarningDialog } from "@/components/SSLWarningDialog";
@@ -485,6 +487,14 @@ export function PlayerProvider({ children, onStationPlay }: { children: React.Re
         toast({ title: t("player.error"), description: t("player.streamUnavailable"), variant: "destructive" });
         return;
       }
+
+      // Content firewall — never play a blocked station.
+      if (!isStationSafe(station)) {
+        console.warn('[RadioSphere] Playback blocked by content filter.');
+        toast({ title: t("player.error"), description: t("player.streamUnavailable"), variant: "destructive" });
+        return;
+      }
+
 
       // Detect mixed content (HTTP stream on HTTPS page)
       const isPageSecure = window.location.protocol === 'https:';

@@ -128,7 +128,7 @@ export function SuggestedLocalStations({ isFavorite, onToggleFavorite }: Suggest
             `stations/bycountrycodeexact/${encodeURIComponent(code)}`,
             { limit: "40", order: "clickcount", reverse: "true", hidebroken: "true" },
           );
-          pool = raw.map(normalizeRaw).filter((s) => s.streamUrl && s.name);
+          pool = filterStationList(raw.map(normalizeRaw).filter((s) => s.streamUrl && s.name));
         } catch (apiErr) {
           console.warn("[SuggestedLocalStations] API failed, falling back", apiErr);
           if (geo.name) {
@@ -136,6 +136,7 @@ export function SuggestedLocalStations({ isFavorite, onToggleFavorite }: Suggest
             pool = data.filter((s) => s.countryCode?.toUpperCase() === code);
           }
         }
+
 
         // Prioritize stations matching the UI language, then fill with the
         // rest (already ordered by clickcount). Dedupe by id.

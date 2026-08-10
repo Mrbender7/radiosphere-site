@@ -50,9 +50,11 @@ export function useFavorites() {
   const isFavorite = useCallback((id: string) => favorites.some(s => s.id === id), [favorites]);
 
 
-  const importFavorites = useCallback((stations: RadioStation[]) => {
+  const importFavorites = useCallback((incoming: RadioStation[]) => {
+    const stations = pruneBlockedFavorites(incoming);
     let addedCount = 0;
     setFavorites(prev => {
+
       const existingUrls = new Map(prev.map(s => [s.streamUrl, s]));
       const newStations: RadioStation[] = [];
       for (const s of stations) {

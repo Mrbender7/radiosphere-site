@@ -3,7 +3,32 @@ import { useTranslation } from "@/contexts/LanguageContext";
 import { useSleepTimer, SLEEP_TIMER_OPTIONS } from "@/contexts/SleepTimerContext";
 import { useFavoritesContext } from "@/contexts/FavoritesContext";
 import { cn } from "@/lib/utils";
-import { Settings as SettingsIcon, Moon, ChevronDown, TimerOff, Heart, Download, Upload, RefreshCw, Wifi, Trash2 } from "lucide-react";
+import { Settings as SettingsIcon, Moon, ChevronDown, TimerOff, Heart, Download, Upload, RefreshCw, Wifi, Trash2, Lock } from "lucide-react";
+import type { Language } from "@/i18n/translations";
+
+const PREMIUM_SLEEP_TIMER_NOTICES: Record<Language, string> = {
+  fr: "La minuterie de sommeil est une fonction Premium de l'application Android.",
+  en: "The sleep timer is a Premium feature of the Android app.",
+  es: "El temporizador de sueño es una función Premium de la aplicación Android.",
+  de: "Der Schlaf-Timer ist eine Premium-Funktion der Android-App.",
+  ja: "スリープタイマーはAndroidアプリのプレミアム機能です。",
+  it: "Il timer di spegnimento è una funzione Premium dell'app Android.",
+  nl: "De slaaptimer is een Premium-functie van de Android-app.",
+  sv: "Sovtimern är en Premium-funktion i Android-appen.",
+  "pt-BR": "O temporizador de sono é um recurso Premium do aplicativo Android.",
+  pt: "O temporizador de sono é uma funcionalidade Premium da aplicação Android.",
+  pl: "Wyłącznik czasowy to funkcja Premium aplikacji na Androida.",
+  "zh-TW": "睡眠定時器是 Android 應用程式的 Premium 功能。",
+  zh: "睡眠定时器是 Android 应用的 Premium 功能。",
+  tr: "Uyku zamanlayıcısı Android uygulamasının Premium özelliğidir.",
+  ru: "Таймер сна — это функция Premium в приложении Android.",
+  uk: "Таймер сну — це функція Premium у застосунку Android.",
+  id: "Timer tidur adalah fitur Premium di aplikasi Android.",
+  ms: "Pemasa tidur ialah ciri Premium dalam aplikasi Android.",
+  th: "ตั้งเวลาปิดเครื่องเป็นฟีเจอร์ Premium ของแอป Android",
+  ar: "مؤقّت النوم ميزة Premium في تطبيق Android.",
+  hi: "स्लीप टाइमर Android ऐप का Premium फ़ीचर है।",
+};
 import { LANGUAGE_OPTIONS } from "@/i18n/translations";
 import {
   Select,

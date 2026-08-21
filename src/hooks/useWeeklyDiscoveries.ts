@@ -3,6 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import { RadioStation } from "@/types/radio";
 import { radioBrowserProvider } from "@/services/RadioService";
 import { safeGetItem, safeSetItem, safeRemoveItem } from "@/utils/safeStorage";
+import { pruneBlockedFavorites } from "@/services/contentFilter";
+
 
 const DISCOVERIES_KEY = "radioshere_weekly_discoveries";
 const DISCOVERIES_HISTORY_KEY = "radioshere_discoveries_history";

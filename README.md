@@ -57,6 +57,34 @@ Discover **Radio Sphere**, the ultimate app to explore radio frequencies from al
 
 ---
 
+## 🛡️ Modération de contenu (pare-feu de stations)
+
+`src/services/contentFilter.ts` est un pare-feu **côté client** qui écarte
+silencieusement les stations liées à l'extrémisme violent / au terrorisme
+(politique Google Play). Il est identique à celui de l'application Android.
+
+**Points d'application** (aucun chemin de données ne doit atteindre l'UI sans passer par le filtre) :
+
+- Couche API : `src/services/RadioService.ts` (recherche, top, pays, tag, station par URL) et le fallback GitHub.
+- Suggestions locales : `src/components/SuggestedLocalStations.tsx`.
+- Garde de lecture : `src/contexts/PlayerContext.tsx` (une station bloquée n'est jamais jouée).
+- Stockage local : favoris / récents (`src/hooks/useFavorites.ts`), découvertes hebdomadaires
+  (`src/hooks/useWeeklyDiscoveries.ts`), export CSV (`src/pages/SettingsPage.tsx`).
+
+**Ajouter une station** : privilégier **toujours** son UUID Radio Browser exact dans
+`stationIds` (zéro faux positif). N'utiliser `names` / `keywords` que pour des libellés
+sans ambiguïté, et `nameByCountry` pour les homonymes (ex. « Sam FM », bloqué uniquement en `YE`).
+
+**Faux positifs à ne jamais bloquer** : « SAM FM Hampshire » (GB), « Sam FM » (NL/NG),
+« Tamil_Murasam FM » (IN). Ne jamais bannir un pays entier.
+
+**Règles** : filtrage silencieux (pas de toast/badge/log nommant une station, seulement un
+compteur `console.debug`), tests dans `src/test/contentFilter.test.ts` (`bunx vitest run`),
+audit périodique via `python3 scripts/scan-radiobrowser.py`.
+
+---
+
+
 ## 🚀 Getting Started
 
 ```bash

@@ -34,9 +34,14 @@ function saveHistory(ids: string[]) {
 function loadCached(): StoredDiscoveries | null {
   try {
     const raw = safeGetItem(DISCOVERIES_KEY);
-    return raw ? JSON.parse(raw) : null;
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as StoredDiscoveries;
+    // Purge any blocked station that may have been cached before the
+    // content firewall was applied (or before a blocklist update).
+    return { ...parsed, stations: pruneBlockedFavorites(parsed.stations || []) };
   } catch { return null; }
 }
+
 
 function analyzeFavorites(favorites: RadioStation[]): { tags: string[]; countries: string[] } {
   const tagCount: Record<string, number> = {};

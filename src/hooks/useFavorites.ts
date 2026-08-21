@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { RadioStation } from "@/types/radio";
 import { safeGetItem, safeSetItem } from "@/utils/safeStorage";
 import { pruneBlockedFavorites, isStationSafe } from "@/services/contentFilter";
@@ -60,7 +60,7 @@ export function useFavorites() {
     const prev = favoritesRef.current;
     let addedCount = 0;
 
-    const existingUrls = new Map(prev.map(s => [s.streamUrl, s]));
+    const existingUrls = new Map<string, RadioStation>(prev.map(s => [s.streamUrl, s]));
     const newStations: RadioStation[] = [];
     for (const s of stations) {
       const existing = existingUrls.get(s.streamUrl);

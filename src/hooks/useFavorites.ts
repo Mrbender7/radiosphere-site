@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { RadioStation } from "@/types/radio";
 import { safeGetItem, safeSetItem } from "@/utils/safeStorage";
 import { pruneBlockedFavorites, isStationSafe } from "@/services/contentFilter";
@@ -50,30 +50,37 @@ export function useFavorites() {
   const isFavorite = useCallback((id: string) => favorites.some(s => s.id === id), [favorites]);
 
 
+  const favoritesRef = useRef<RadioStation[]>([]);
+  useEffect(() => {
+    favoritesRef.current = favorites;
+  }, [favorites]);
+
   const importFavorites = useCallback((incoming: RadioStation[]) => {
     const stations = pruneBlockedFavorites(incoming);
+    const prev = favoritesRef.current;
     let addedCount = 0;
-    setFavorites(prev => {
 
-      const existingUrls = new Map(prev.map(s => [s.streamUrl, s]));
-      const newStations: RadioStation[] = [];
-      for (const s of stations) {
-        const existing = existingUrls.get(s.streamUrl);
-        if (existing) {
-          // Update metadata if the incoming station has richer data (e.g. logo)
-          if (s.logo && !existing.logo) {
-            existingUrls.set(s.streamUrl, { ...existing, ...s, id: s.id || existing.id });
-          }
-        } else {
-          newStations.push(s);
-          addedCount++;
+    const existingUrls = new Map<string, RadioStation>(prev.map(s => [s.streamUrl, s]));
+    const newStations: RadioStation[] = [];
+    for (const s of stations) {
+      const existing = existingUrls.get(s.streamUrl);
+      if (existing) {
+        // Update metadata if the incoming station has richer data (e.g. logo)
+        if (s.logo && !existing.logo) {
+          existingUrls.set(s.streamUrl, { ...existing, ...s, id: s.id || existing.id });
         }
+      } else {
+        newStations.push(s);
+        addedCount++;
       }
-      const updated = Array.from(existingUrls.values());
-      return [...updated, ...newStations].sort((a, b) => a.name.localeCompare(b.name));
-    });
+    }
+    const updated = Array.from(existingUrls.values());
+    const next = [...updated, ...newStations].sort((a, b) => a.name.localeCompare(b.name));
+    favoritesRef.current = next;
+    setFavorites(next);
     return addedCount;
   }, []);
+
 
   return { favorites, toggleFavorite, isFavorite, importFavorites };
 }

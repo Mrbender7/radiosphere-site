@@ -3,6 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import { RadioStation } from "@/types/radio";
 import { radioBrowserProvider } from "@/services/RadioService";
 import { safeGetItem, safeSetItem, safeRemoveItem } from "@/utils/safeStorage";
+import { pruneBlockedFavorites } from "@/services/contentFilter";
+
 
 const DISCOVERIES_KEY = "radioshere_weekly_discoveries";
 const DISCOVERIES_HISTORY_KEY = "radioshere_discoveries_history";
@@ -34,9 +36,14 @@ function saveHistory(ids: string[]) {
 function loadCached(): StoredDiscoveries | null {
   try {
     const raw = safeGetItem(DISCOVERIES_KEY);
-    return raw ? JSON.parse(raw) : null;
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as StoredDiscoveries;
+    // Purge any blocked station that may have been cached before the
+    // content firewall was applied (or before a blocklist update).
+    return { ...parsed, stations: pruneBlockedFavorites(parsed.stations || []) };
   } catch { return null; }
 }
+
 
 function analyzeFavorites(favorites: RadioStation[]): { tags: string[]; countries: string[] } {
   const tagCount: Record<string, number> = {};
